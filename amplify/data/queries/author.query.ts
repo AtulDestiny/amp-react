@@ -1,40 +1,29 @@
-import {
-  a,
-} from '@aws-amplify/backend';
-import {
-  Author,
-} from '../models/author';
+import { a } from "@aws-amplify/backend";
+import { Author } from "../models/author";
 
-export const GetAuthor = a.query()
-  .arguments({
+export const GetAuthor = a.query({
+  arguments: {
     id: a.string().required(),
-  })
-  .returns(Author)
-  .resolve(({
-    args, ctx,
-  }) => {
-    return ctx.db.Author.get({
-      id: args.id,
-    });
-  });
+  },
+  returns: Author,
+  handler: a.handler.custom(({ args, ctx }) => {
+    return ctx.db.Author.get({ id: args.id });
+  }),
+});
 
-export const ListAuthors = a.query()
-  .returns(a.array(Author))
-  .resolve(({
-    ctx,
-  }) => {
+export const ListAuthors = a.query({
+  returns: a.ref(Array.of(Author)),
+  handler: a.handler.custom(({ ctx }) => {
     return ctx.db.Author.list();
-  });
+  }),
+});
 
-export const GetAuthorById = a.query()
-  .arguments({
+export const GetAuthorById = a.query({
+  arguments: {
     id: a.string().required(),
-  })
-  .returns(Author)
-  .resolve(async ({
-    args, ctx,
-  }) => {
-    return ctx.db.Author.get({
-      id: args.id,
-    });
-  });
+  },
+  returns: Author,
+  handler: a.handler.custom(async ({ args, ctx }) => {
+    return ctx.db.Author.get({ id: args.id });
+  }),
+});
