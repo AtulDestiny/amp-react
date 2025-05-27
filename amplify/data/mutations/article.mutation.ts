@@ -1,11 +1,8 @@
-import {
-  a,
-} from '@aws-amplify/backend';
-import {
-  Article,
-} from '../models/article';
+import { a } from "@aws-amplify/backend";
+import { Article } from "../models/article";
 
-export const CreateArticle = a.mutation()
+export const CreateArticle = a
+  .mutation()
   .arguments({
     id: a.string(),
     title: a.string(),
@@ -14,41 +11,35 @@ export const CreateArticle = a.mutation()
     authorId: a.string(),
   })
   .returns(Article)
-  .resolve(async ({
-    args, ctx,
-  }) => {
+  .resolve(async ({ args, ctx }) => {
     return await ctx.db.Article.create(args);
   });
 
-export const UpdateArticle = a.mutation()
+export const UpdateArticle = a
+  .mutation()
   .arguments({
     id: a.string().required(),
-    id: a.string(),
     title: a.string(),
     content: a.string(),
     createdAt: a.datetime(),
     authorId: a.string(),
   })
   .returns(Article)
-  .resolve(async ({
-    args, ctx,
-  }) => {
-    const {
-      id, ...updates
-    } = args;
+  .resolve(async ({ args, ctx }) => {
+    const { id, ...updates } = args;
     return await ctx.db.Article.update({
-      id, updates,
+      id,
+      updates,
     });
   });
 
-export const DeleteArticle = a.mutation()
+export const DeleteArticle = a
+  .mutation()
   .arguments({
     id: a.string().required(),
   })
   .returns(a.boolean())
-  .resolve(async ({
-    args, ctx,
-  }) => {
+  .resolve(async ({ args, ctx }) => {
     await ctx.db.Article.delete({
       id: args.id,
     });

@@ -1,50 +1,41 @@
-import {
-  a,
-} from '@aws-amplify/backend';
-import {
-  Author,
-} from '../models/author';
+import { a } from "@aws-amplify/backend";
+import { Author } from "../models/author";
 
-export const CreateAuthor = a.mutation()
+export const CreateAuthor = a
+  .mutation()
   .arguments({
     id: a.string(),
     name: a.string(),
     email: a.string(),
   })
   .returns(Author)
-  .resolve(async ({
-    args, ctx,
-  }) => {
+  .resolve(async ({ args, ctx }) => {
     return await ctx.db.Author.create(args);
   });
 
-export const UpdateAuthor = a.mutation()
+export const UpdateAuthor = a
+  .mutation()
   .arguments({
     id: a.string().required(),
-    id: a.string(),
     name: a.string(),
     email: a.string(),
   })
   .returns(Author)
-  .resolve(async ({
-    args, ctx,
-  }) => {
-    const {
-      id, ...updates
-    } = args;
+  .resolve(async ({ args, ctx }) => {
+    const { id, ...updates } = args;
     return await ctx.db.Author.update({
-      id, updates,
+      id,
+      updates,
     });
   });
 
-export const DeleteAuthor = a.mutation()
+export const DeleteAuthor = a
+  .mutation()
   .arguments({
     id: a.string().required(),
   })
   .returns(a.boolean())
-  .resolve(async ({
-    args, ctx,
-  }) => {
+  .resolve(async ({ args, ctx }) => {
     await ctx.db.Author.delete({
       id: args.id,
     });
