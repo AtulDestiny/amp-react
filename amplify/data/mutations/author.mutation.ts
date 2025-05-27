@@ -8,7 +8,7 @@ export const CreateAuthor = a.mutation({
     email: a.string(),
   },
   returns: Author,
-  handler: a.handler.custom(async (input) => {
+  handler: a.handler.sync(async (input) => {
     const { args, ctx } = input;
     return await ctx.db.Author.create(args);
   }),
@@ -21,7 +21,7 @@ export const UpdateAuthor = a.mutation({
     email: a.string(),
   },
   returns: Author,
-  handler: a.handler.custom(async (input) => {
+  handler: a.handler.sync(async (input) => {
     const { args, ctx } = input;
     const { id, ...updates } = args;
     return await ctx.db.Author.update({ id, ...updates });
@@ -33,7 +33,7 @@ export const DeleteAuthor = a.mutation({
     id: a.string().required(),
   },
   returns: a.boolean(),
-  handler: a.handler.custom(async (input) => {
+  handler: a.handler.sync(async (input) => {
     const { args, ctx } = input;
     await ctx.db.Author.delete({ id: args.id });
     return true;

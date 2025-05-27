@@ -6,7 +6,7 @@ export const GetAuthor = a.query({
     id: a.string().required(),
   },
   returns: Author,
-  handler: a.handler.custom((input) => {
+  handler: a.handler.sync((input) => {
     const { args, ctx } = input;
     return ctx.db.Author.get({ id: args.id });
   }),
@@ -14,7 +14,7 @@ export const GetAuthor = a.query({
 
 export const ListAuthors = a.query({
   returns: a.ref(Array.of(Author)),
-  handler: a.handler.custom((input) => {
+  handler: a.handler.sync((input) => {
     const { ctx } = input;
     return ctx.db.Author.list();
   }),
@@ -25,7 +25,7 @@ export const GetAuthorById = a.query({
     id: a.string().required(),
   },
   returns: Author,
-  handler: a.handler.custom(async (input) => {
+  handler: a.handler.sync(async (input) => {
     const { args, ctx } = input;
     return ctx.db.Author.get({ id: args.id });
   }),

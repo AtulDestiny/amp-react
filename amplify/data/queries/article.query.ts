@@ -6,7 +6,7 @@ export const GetArticle = a.query({
     id: a.string().required(),
   },
   returns: Article,
-  handler: a.handler.custom((input) => {
+  handler: a.handler.sync((input) => {
     const { args, ctx } = input;
     return ctx.db.Article.get({ id: args.id });
   }),
@@ -14,7 +14,7 @@ export const GetArticle = a.query({
 
 export const ListArticles = a.query({
   returns: a.ref(Array.of(Article)),
-  handler: a.handler.custom((input) => {
+  handler: a.handler.sync((input) => {
     const { ctx } = input;
     return ctx.db.Article.list();
   }),
@@ -25,7 +25,7 @@ export const GetArticleById = a.query({
     id: a.string().required(),
   },
   returns: Article,
-  handler: a.handler.custom(async (input) => {
+  handler: a.handler.sync(async (input) => {
     const { args, ctx } = input;
     return ctx.db.Article.get({ id: args.id });
   }),
