@@ -10,7 +10,8 @@ export const CreateArticle = a.mutation({
     authorId: a.string(),
   },
   returns: Article,
-  handler: a.handler.custom(async ({ args, ctx }) => {
+  handler: a.handler.custom(async (input) => {
+    const { args, ctx } = input;
     return await ctx.db.Article.create(args);
   }),
 });
@@ -24,9 +25,11 @@ export const UpdateArticle = a.mutation({
     authorId: a.string(),
   },
   returns: Article,
-  handler: a.handler.custom(async ({ args, ctx }) => {
+  handler: a.handler.custom(async (input) => {
+    const { args, ctx } = input;
     const { id, ...updates } = args;
-    return await ctx.db.Article.update({ id, updates });
+    // Depending on your db client, adjust this call
+    return await ctx.db.Article.update({ id, ...updates });
   }),
 });
 
@@ -35,7 +38,8 @@ export const DeleteArticle = a.mutation({
     id: a.string().required(),
   },
   returns: a.boolean(),
-  handler: a.handler.custom(async ({ args, ctx }) => {
+  handler: a.handler.custom(async (input) => {
+    const { args, ctx } = input;
     await ctx.db.Article.delete({ id: args.id });
     return true;
   }),
