@@ -14,7 +14,7 @@ export const GetArticle = defineQuery({
 
 export const ListArticles = defineQuery({
   name: "ListArticles",
-  returns: a.arrayOf(Article),
+  returns: a.array(Article),
   resolve: async ({ ctx }) => {
     return ctx.db.Article.list();
   },
