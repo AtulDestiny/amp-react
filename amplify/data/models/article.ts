@@ -9,6 +9,6 @@ export const Article = a
     authorId: a.id().required(),
     author: a.belongsTo("Author", "authorId"),
   })
-  .identifier(["id"])
-  // .secondaryIndexes((index) => [index('authorId')])
+  // .identifier(["id"])
+  .secondaryIndexes((index) => [index("authorId")])
   .authorization((allow: any) => [allow.publicApiKey()]);
