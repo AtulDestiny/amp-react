@@ -1,7 +1,6 @@
-// amplify/data/models/Article.ts
 import { a } from "@aws-amplify/backend";
 
-export const Article = a.model(() => ({
+export const Article = a.model({
   fields: {
     id: a.id().required(),
     title: a.string().required(),
@@ -12,7 +11,7 @@ export const Article = a.model(() => ({
   },
   identifier: {
     name: "byId",
-    fields: ["id"], // must match exactly with fields.id
+    fields: ["id"],
   },
   indexes: {
     byAuthorCreatedAt: {
@@ -20,4 +19,4 @@ export const Article = a.model(() => ({
     },
   },
   authorization: (allow) => [allow.publicApiKey()],
-}));
+});
