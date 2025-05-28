@@ -11,9 +11,9 @@ export const Article = a
   })
   // identifier
   .identifier(["id"])
-  .secondaryIndexes((index) => [index("id")])
-  // index: search by title
-  .index("byTitle", ["title"])
-  // composite index: query by authorId + createdAt
-  .index("byAuthorIdCreatedAt", ["authorId", "createdAt"])
+  // .secondaryIndexes((index) => [index("id")])
+  // // index: search by title
+  // .index("byTitle", ["title"])
+  // // composite index: query by authorId + createdAt
+  // .index("byAuthorIdCreatedAt", ["authorId", "createdAt"])
   .authorization((allow) => [allow.publicApiKey()]);
