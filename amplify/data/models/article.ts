@@ -1,22 +1,19 @@
-import { a } from "@aws-amplify/backend";
+import { a, defineModel } from "@aws-amplify/backend";
 
-export const Article = a.model({
-  fields: {
+export const Article = defineModel({
+  name: "Article",
+  fields: (a) => ({
     id: a.id().required(),
     title: a.string().required(),
     content: a.string().required(),
     createdAt: a.datetime(),
     authorId: a.string().required(),
     author: a.belongsTo("Author", "authorId"),
-  },
-  identifier: {
-    name: "byId",
-    fields: ["id"],
-  },
-  indexes: {
+  }),
+  indexes: (a) => ({
     byAuthorCreatedAt: {
-      fields: ["authorId", "createdAt"],
+      fields: [a.field("authorId"), a.field("createdAt")],
     },
-  },
+  }),
   authorization: (allow) => [allow.publicApiKey()],
 });
