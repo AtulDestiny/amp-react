@@ -1,17 +1,16 @@
-import { a } from "@aws-amplify/backend";
+import { a, type InferHandler } from "@aws-amplify/backend";
 import { Article } from "../models/article";
 
-export const GetArticle = a
+const getArticle = a
   .query()
   .arguments({
     id: a.string().required(),
   })
-  .returns(Article)
-  .handler(({ args, ctx }) => {
-    return ctx.db.Article.get({
-      id: args.id,
-    });
-  });
+  .returns(Article);
+
+export const GetArticle = getArticle.handler((async (event, context) => {
+  return context.db.Article.get({ id: event.arguments.id });
+}) satisfies InferHandler<typeof getArticle>);
 
 // export const GetArticle = a.query()
 //   .arguments({
