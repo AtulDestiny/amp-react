@@ -6,7 +6,7 @@ export const Article = a
     title: a.string().required(),
     content: a.string().required(),
     createdAt: a.datetime(),
-    authorId: a.string().required(),
+    // authorId: a.string().required(),
     author: a.belongsTo("Author", "authorId"),
   })
   .identifier(["id"])
