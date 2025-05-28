@@ -1,33 +1,32 @@
-import { a } from "@aws-amplify/backend";
+import { a, defineQuery } from "@aws-amplify/backend";
 import { Article } from "../models/article";
 
-export const GetArticle = a.query({
+export const GetArticle = defineQuery({
+  name: "GetArticle",
   arguments: {
     id: a.string().required(),
   },
   returns: Article,
-  resolve: ({ args, ctx }) => {
-    return ctx.db.Article.get({
-      id: args.id,
-    });
+  resolve: async ({ args, ctx }) => {
+    return ctx.db.Article.get({ id: args.id });
   },
 });
 
-export const ListArticles = a
-  .query()
-  .returns(a.array(Article))
-  .resolve(({ ctx }) => {
+export const ListArticles = defineQuery({
+  name: "ListArticles",
+  returns: a.arrayOf(Article),
+  resolve: async ({ ctx }) => {
     return ctx.db.Article.list();
-  });
+  },
+});
 
-export const GetArticleById = a
-  .query()
-  .arguments({
+export const GetArticleById = defineQuery({
+  name: "GetArticleById",
+  arguments: {
     id: a.string().required(),
-  })
-  .returns(Article)
-  .resolve(async ({ args, ctx }) => {
-    return ctx.db.Article.get({
-      id: args.id,
-    });
-  });
+  },
+  returns: Article,
+  resolve: async ({ args, ctx }) => {
+    return ctx.db.Article.get({ id: args.id });
+  },
+});
