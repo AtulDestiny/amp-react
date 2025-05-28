@@ -1,29 +1,15 @@
-import { a } from "@aws-amplify/backend";
+import { a, defineFunction } from "@aws-amplify/backend";
 import { Article } from "../models/article";
 
-export const GetArticle = a.customQuery({
-  arguments: {
-    id: a.string().required(),
-  },
-  returns: Article,
-  handler: async ({ args, ctx }) => {
-    return ctx.db.Article.get({ id: args.id });
-  },
+// Define the handler function
+const getArticleHandler = defineFunction({
+  entry: "./handlers/get-article.handler.ts",
 });
 
-export const ListArticles = a.customQuery({
-  returns: a.array(Article),
-  handler: async ({ ctx }) => {
-    return ctx.db.Article.list();
-  },
-});
-
-export const GetArticleById = a.customQuery({
-  arguments: {
+export const GetArticle = a
+  .query()
+  .arguments({
     id: a.string().required(),
-  },
-  returns: Article,
-  handler: async ({ args, ctx }) => {
-    return ctx.db.Article.get({ id: args.id });
-  },
-});
+  })
+  .returns(Article)
+  .handler(a.handler.function(getArticleHandler));
