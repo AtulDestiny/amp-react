@@ -8,6 +8,7 @@ export const GetArticle = a
   })
   .returns(Article)
   .handler(async (event, context) => {
-    const { id } = event.arguments;
-    return context.db.Article.get({ id });
+    return context.db.Article.get({
+      id: event.arguments.id,
+    });
   });
