@@ -10,7 +10,7 @@ export const Article = a
     author: a.belongsTo("Author", "authorId"),
   })
   // identifier
-  .identifier(["authorId"])
+  .identifier(["id"])
   .secondaryIndexes((index) => [index("id")])
   // index: search by title
   .index("byTitle", ["title"])
