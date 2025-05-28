@@ -7,8 +7,42 @@ export const GetArticle = a
     id: a.string().required(),
   })
   .returns(Article)
-  .handler(async (event, context) => {
-    return context.db.Article.get({
-      id: event.arguments.id,
+  .handler(({ args, ctx }) => {
+    return ctx.db.Article.get({
+      id: args.id,
     });
   });
+
+// export const GetArticle = a.query()
+//   .arguments({
+//     id: a.string().required(),
+//   })
+//   .returns(Article)
+//   .resolve(({
+//     args, ctx,
+//   }) => {
+//     return ctx.db.Article.get({
+//       id: args.id,
+//     });
+//   });
+
+// export const ListArticles = a.query()
+//   .returns(a.array(Article))
+//   .resolve(({
+//     ctx,
+//   }) => {
+//     return ctx.db.Article.list();
+//   });
+
+// export const GetArticleById = a.query()
+//   .arguments({
+//     id: a.string().required(),
+//   })
+//   .returns(Article)
+//   .resolve(async ({
+//     args, ctx,
+//   }) => {
+//     return ctx.db.Article.get({
+//       id: args.id,
+//     });
+//   });
