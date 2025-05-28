@@ -1,4 +1,4 @@
-import { a, defineFunction } from "@aws-amplify/backend";
+import { a } from "@aws-amplify/backend";
 import { Article } from "../models/article";
 
 export const GetArticle = a
@@ -7,8 +7,7 @@ export const GetArticle = a
     id: a.string().required(),
   })
   .returns(Article)
-  .handler(async (event: any, context: any) => {
-    return context.db.Article.get({
-      id: event.arguments.id,
-    });
+  .handler(async (event, context) => {
+    const { id } = event.arguments;
+    return context.db.Article.get({ id });
   });
