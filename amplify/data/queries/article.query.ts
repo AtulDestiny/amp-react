@@ -2,7 +2,7 @@ import { a, defineFunction } from "@aws-amplify/backend";
 import { Article } from "../models/article";
 
 const articleHandler = defineFunction({
-  entry: "./handlers/article-handler.ts",
+  entry: "../handlers/article-handler.ts",
 });
 
 export const GetArticle = a
