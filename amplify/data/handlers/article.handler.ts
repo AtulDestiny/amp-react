@@ -1,6 +1,6 @@
 import type { Schema } from "../resource";
 
-export const handler: Schema["article"]["functionHandler"] = async (
+export const handler: Schema["Article"]["functionHandler"] = async (
   event,
   context
 ) => {
