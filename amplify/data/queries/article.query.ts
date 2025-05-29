@@ -1,8 +1,8 @@
 import { a, defineFunction } from "@aws-amplify/backend";
 import { Article } from "../models/article";
 
-const articleHandler = defineFunction({
-  entry: "../handlers/article-handler.ts",
+const GetArticleFunction = defineFunction({
+  entry: "../functions/get-article-handler.ts",
 });
 
 export const GetArticle = a
@@ -10,8 +10,7 @@ export const GetArticle = a
   .arguments({ id: a.string().required() })
   .returns(Article)
   .authorization((allow) => [allow.publicApiKey()])
-  // .handler(a.handler.function(getArticleFunction));
-  .handler(a.handler.function(articleHandler));
+  .handler(a.handler.function(GetArticleFunction));
 
 // export const ListArticles = a
 //   .query()
