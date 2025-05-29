@@ -13,6 +13,7 @@ export const GetArticle = a
   .handler(a.handler.function(articleHandler));
 
 // export const ListArticles = a
+//
 //   .query()
 //   .returns(a.array(Article))
 //   .resolve(({ ctx }) => {
