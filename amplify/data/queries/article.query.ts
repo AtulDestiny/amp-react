@@ -1,19 +1,15 @@
-import { a, defineFunction } from "@aws-amplify/backend";
+import { a } from "@aws-amplify/backend";
 import { Article } from "../models/article";
-
-const articleHandler = defineFunction({
-  entry: "../handlers/article-handler.ts",
-});
+import { getArticleFunction } from "../handlers/article/resource";
 
 export const GetArticle = a
   .query()
   .arguments({ id: a.string().required() })
   .returns(Article)
   .authorization((allow) => [allow.publicApiKey()])
-  .handler(a.handler.function(articleHandler));
+  .handler(a.handler.function(getArticleFunction));
 
 // export const ListArticles = a
-//
 //   .query()
 //   .returns(a.array(Article))
 //   .resolve(({ ctx }) => {
