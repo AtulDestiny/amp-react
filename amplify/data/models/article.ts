@@ -40,18 +40,6 @@ export const Article = a
   })
   .secondaryIndexes((index: any) => [index("authorId")])
   .authorization((allow) => [
-    allow
-      .publicApiKey()
-      .to([
-        "get",
-        "list",
-        "read",
-        "create",
-        "update",
-        "delete",
-        "listen",
-        "search",
-        "sync",
-      ]),
+    allow.publicApiKey().to(["read", "create", "update", "delete"]),
     allow.authenticated().to(["read"]),
   ]);
