@@ -6,7 +6,19 @@ export const Article = a
       .string()
       .required()
       .authorization((allow) => [
-        allow.publicApiKey().to(["read"]),
+        allow
+          .publicApiKey()
+          .to([
+            "get",
+            "list",
+            "read",
+            "create",
+            "update",
+            "delete",
+            "listen",
+            "search",
+            "sync",
+          ]),
         allow.authenticated().to(["read"]),
       ]),
     title: a
@@ -43,4 +55,3 @@ export const Article = a
     allow.publicApiKey().to(["read"]),
     allow.authenticated().to(["read"]),
   ]);
-// .authorization((allow: any) => [allow.publicApiKey()]);
