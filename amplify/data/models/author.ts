@@ -8,4 +8,5 @@ export const Author = a
     articles: a.hasMany("Article", "authorId"),
   })
   .secondaryIndexes((index: any) => [index("authorId"), index("email")])
-  .authorization((allow: any) => [allow.publicApiKey()]);
+  .authorization((allow) => [allow.owner()]);
+// .authorization((allow: any) => [allow.publicApiKey()]);

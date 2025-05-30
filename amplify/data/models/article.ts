@@ -10,4 +10,5 @@ export const Article = a
     author: a.belongsTo("Author", "authorId"),
   })
   .secondaryIndexes((index: any) => [index("authorId")])
-  .authorization((allow: any) => [allow.publicApiKey()]);
+  .authorization((allow) => [allow.owner()]);
+// .authorization((allow: any) => [allow.publicApiKey()]);
