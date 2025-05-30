@@ -5,9 +5,8 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": false,
-    "strict": false,
-    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "skipLibCheck": true,
     "paths": {
       "$amplify/*": [

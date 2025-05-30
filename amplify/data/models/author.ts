@@ -5,28 +5,28 @@ export const Author = a
     authorId: a
       .string()
       .required()
-      .authorization((allow) => [
+      .authorization((allow: any) => [
         allow.publicApiKey().to(["read", "create", "update", "delete"]),
         allow.authenticated().to(["read"]),
       ]),
     name: a
       .string()
       .required()
-      .authorization((allow) => [
-        allow.publicApiKey().to(["read"]),
+      .authorization((allow: any) => [
+        allow.publicApiKey().to(["read", "create", "update", "delete"]),
         allow.authenticated().to(["read"]),
       ]),
     email: a
       .string()
       .required()
-      .authorization((allow) => [
-        allow.publicApiKey().to(["read"]),
+      .authorization((allow: any) => [
+        allow.publicApiKey().to(["read", "create", "update", "delete"]),
         allow.authenticated().to(["read"]),
       ]),
     articles: a.hasMany("Article", "authorId"),
   })
   .secondaryIndexes((index: any) => [index("authorId"), index("email")])
-  .authorization((allow) => [
-    allow.publicApiKey().to(["read", "create", "update", "delete"]),
-    allow.authenticated().to(["read"]),
+  .authorization((allow: any) => [
+    allow.publicApiKey().to(["create", "read"]),
+    allow.authenticated().to([]),
   ]);

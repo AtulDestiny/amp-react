@@ -5,41 +5,41 @@ export const Article = a
     id: a
       .string()
       .required()
-      .authorization((allow) => [
+      .authorization((allow: any) => [
         allow.publicApiKey().to(["read", "create", "update", "delete"]),
         allow.authenticated().to(["read"]),
       ]),
     title: a
       .string()
       .required()
-      .authorization((allow) => [
-        allow.publicApiKey().to(["read"]),
+      .authorization((allow: any) => [
+        allow.publicApiKey().to(["read", "create", "update", "delete"]),
         allow.authenticated().to(["read"]),
       ]),
     content: a
       .string()
       .required()
-      .authorization((allow) => [
-        allow.publicApiKey().to(["read"]),
+      .authorization((allow: any) => [
+        allow.publicApiKey().to(["read", "create", "update", "delete"]),
         allow.authenticated().to(["read"]),
       ]),
     createdAt: a
       .datetime()
-      .authorization((allow) => [
-        allow.publicApiKey().to(["read"]),
+      .authorization((allow: any) => [
+        allow.publicApiKey().to(["read", "create", "update", "delete"]),
         allow.authenticated().to(["read"]),
       ]),
     authorId: a
       .string()
       .required()
-      .authorization((allow) => [
-        allow.publicApiKey().to(["read"]),
+      .authorization((allow: any) => [
+        allow.publicApiKey().to(["read", "create", "update", "delete"]),
         allow.authenticated().to(["read"]),
       ]),
     author: a.belongsTo("Author", "authorId"),
   })
   .secondaryIndexes((index: any) => [index("authorId")])
-  .authorization((allow) => [
-    allow.publicApiKey().to(["read", "create", "update", "delete"]),
-    allow.authenticated().to(["read"]),
+  .authorization((allow: any) => [
+    allow.publicApiKey().to(["create", "read"]),
+    allow.authenticated().to(["create", "update", "read"]),
   ]);
