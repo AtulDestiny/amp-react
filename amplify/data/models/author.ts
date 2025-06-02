@@ -23,7 +23,7 @@ export const Author = a
         allow.publicApiKey().to(["create", "read"]),
         allow.authenticated().to(["read"]),
       ]),
-    articles: a.hasMany("Article", "authorId"),
+    article: a.hasMany("Article", "authorId"),
   })
   .secondaryIndexes((index: any) => [index("authorId"), index("email")])
   .authorization((allow: any) => [
