@@ -6,27 +6,27 @@ export const Author = a
       .string()
       .required()
       .authorization((allow: any) => [
-        allow.publicApiKey().to([]),
-        allow.authenticated().to([]),
+        allow.publicApiKey().to(["read"]),
+        allow.authenticated().to(["read"]),
       ]),
     name: a
       .string()
       .required()
       .authorization((allow: any) => [
         allow.publicApiKey().to(["create", "read"]),
-        allow.authenticated().to([]),
+        allow.authenticated().to(["read"]),
       ]),
     email: a
       .string()
       .required()
       .authorization((allow: any) => [
         allow.publicApiKey().to(["create", "read"]),
-        allow.authenticated().to([]),
+        allow.authenticated().to(["read"]),
       ]),
     articles: a.hasMany("Article", "authorId"),
   })
   .secondaryIndexes((index: any) => [index("authorId"), index("email")])
   .authorization((allow: any) => [
     allow.publicApiKey().to(["create", "read"]),
-    allow.authenticated().to([]),
+    allow.authenticated().to(["read"]),
   ]);
