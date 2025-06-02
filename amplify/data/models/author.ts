@@ -6,8 +6,8 @@ export const Author = a
       .string()
       .required()
       .authorization((allow: any) => [
-        allow.publicApiKey().to(["0"]),
-        allow.authenticated().to(["0"]),
+        allow.publicApiKey().to([]),
+        allow.authenticated().to([]),
       ]),
     name: a
       .string()
