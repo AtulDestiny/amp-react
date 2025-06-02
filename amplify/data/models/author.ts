@@ -6,22 +6,22 @@ export const Author = a
       .string()
       .required()
       .authorization((allow: any) => [
-        allow.publicApiKey().to(["read", "create", "update", "delete"]),
-        allow.authenticated().to(["read"]),
+        allow.publicApiKey().to(["0"]),
+        allow.authenticated().to(["0"]),
       ]),
     name: a
       .string()
       .required()
       .authorization((allow: any) => [
-        allow.publicApiKey().to(["read", "create", "update", "delete"]),
-        allow.authenticated().to(["read"]),
+        allow.publicApiKey().to(["create", "read"]),
+        allow.authenticated().to([]),
       ]),
     email: a
       .string()
       .required()
       .authorization((allow: any) => [
-        allow.publicApiKey().to(["read", "create", "update", "delete"]),
-        allow.authenticated().to(["read"]),
+        allow.publicApiKey().to(["create", "read"]),
+        allow.authenticated().to([]),
       ]),
     articles: a.hasMany("Article", "authorId"),
   })
