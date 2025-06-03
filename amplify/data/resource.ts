@@ -1,13 +1,13 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
-import { TestAmpAppCustomEntity } from "./models/test-amp-app-custom-entity";
+import { TestCustomEntity } from "./models/test-custom-entity";
 
 import { Article } from "./models/article";
 
 import { Author } from "./models/author";
 
 const schema = a.schema({
-  TestAmpAppCustomEntity,
+  TestCustomEntity,
   Article,
   Author,
 });

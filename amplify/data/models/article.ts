@@ -7,39 +7,39 @@ export const Article = a
       .required()
       .authorization((allow: any) => [
         allow.publicApiKey().to(["create", "read"]),
-        allow.authenticated().to(["create", "read"]),
+        allow.authenticated().to(["read"]),
       ]),
     title: a
       .string()
       .required()
       .authorization((allow: any) => [
         allow.publicApiKey().to(["create", "read"]),
-        allow.authenticated().to(["create", "read"]),
+        allow.authenticated().to(["read"]),
       ]),
     content: a
       .string()
       .required()
       .authorization((allow: any) => [
         allow.publicApiKey().to(["create", "read"]),
-        allow.authenticated().to(["create", "read"]),
+        allow.authenticated().to(["read"]),
       ]),
     createdAt: a
       .datetime()
       .authorization((allow: any) => [
         allow.publicApiKey().to(["create", "read"]),
-        allow.authenticated().to(["create", "read"]),
+        allow.authenticated().to(["read"]),
       ]),
     authorId: a
       .string()
       .required()
       .authorization((allow: any) => [
         allow.publicApiKey().to(["create", "read"]),
-        allow.authenticated().to(["create", "read"]),
+        allow.authenticated().to(["read"]),
       ]),
     author: a.belongsTo("Author", "authorId"),
   })
   .secondaryIndexes((index: any) => [index("authorId")])
   .authorization((allow: any) => [
     allow.publicApiKey().to(["create", "read"]),
-    allow.authenticated().to(["create", "update", "read"]),
+    allow.authenticated().to(["read"]),
   ]);
