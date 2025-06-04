@@ -8,8 +8,7 @@ Amplify.configure({
       buckets: {
         "dev-application-lambdas": {
           bucketName: "dev-application-lambdas",
-          region: "us-east-1",
-          }
+          region: "us-east-1"
         }
       }
     }
