@@ -3,56 +3,41 @@ import { Effect, Policy, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { auth } from "./auth/resource";
 import { data } from "./data/resource";
-import { storage } from './storage/resource';
 
+const REGION = "us-east-1";
+const customBucketArn = "arn:aws:s3:::dev-application-lambdas";
 
 export const backend = defineBackend({
   auth,
   data,
-  storage
 });
-
 
 const customBucketStack = backend.createStack("custom-bucket-stack");
 
-
-// Import existing bucket
 const customBucket = Bucket.fromBucketAttributes(customBucketStack, "MyCustomBucket", {
-  bucketArn: "arn:aws:s3:::dev-application-lambdas",
-  region: "us-east-1"
+  bucketArn: customBucketArn,
+  region: REGION,
 });
-
 
 backend.addOutput({
   storage: {
-    aws_region: customBucket.env.region,
+    aws_region: REGION,
     bucket_name: customBucket.bucketName,
-    // optional: `buckets` can be used when setting up more than one existing bucket
     buckets: [
       {
-        aws_region: customBucket.env.region,
+        aws_region: REGION,
         bucket_name: customBucket.bucketName,
         name: customBucket.bucketName,
-        /*
-          optional: `paths` can be used to set up access to specific 
-          bucket prefixes and configure user access types to them
-        */ 
         paths: {
           "public/*": {
-            // "write" and "delete" can also be added depending on your use case
-            guest: ["get", "list"], 
+            guest: ["get", "list"],
           },
         },
-      }
-    ]
+      },
+    ],
   },
 });
 
-
-/*
-  Define an inline policy to attach to Amplify's unauth role
-  This policy defines how unauthenticated/guest users can access your existing bucket
-*/ 
 const unauthPolicy = new Policy(backend.stack, "customBucketUnauthPolicy", {
   statements: [
     new PolicyStatement({
@@ -63,10 +48,7 @@ const unauthPolicy = new Policy(backend.stack, "customBucketUnauthPolicy", {
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ["s3:ListBucket"],
-      resources: [
-        `${customBucket.bucketArn}`,
-        `${customBucket.bucketArn}/*`
-      ],
+      resources: [`${customBucket.bucketArn}`], // ✅ fix
       conditions: {
         StringLike: {
           "s3:prefix": ["public/", "public/*"],
@@ -76,8 +58,6 @@ const unauthPolicy = new Policy(backend.stack, "customBucketUnauthPolicy", {
   ],
 });
 
-
-// Add the policies to the unauthenticated user role
-backend.auth.resources.unauthenticatedUserIamRole.attachInlinePolicy(
-  unauthPolicy,
-);
+if (backend.auth?.resources?.unauthenticatedUserIamRole) {
+  backend.auth.resources.unauthenticatedUserIamRole.attachInlinePolicy(unauthPolicy);
+}
