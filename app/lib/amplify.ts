@@ -1,4 +1,4 @@
-import { Amplify } from "aws-amplify";
+import { Amplify ,Storage} from "aws-amplify";
 
 Amplify.configure({
   Storage: {
@@ -14,3 +14,4 @@ Amplify.configure({
     }
   }
 });
+Storage.configure({ level: 'private' })
