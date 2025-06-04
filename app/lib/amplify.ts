@@ -9,11 +9,6 @@ Amplify.configure({
         "dev-application-lambdas": {
           bucketName: "dev-application-lambdas",
           region: "us-east-1",
-          paths: {
-            "public/*": {
-              guest: ["get", "list"]
-              // You can also add authenticated or other roles here
-            }
           }
         }
       }
