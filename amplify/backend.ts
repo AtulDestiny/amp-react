@@ -5,7 +5,7 @@ import { auth } from "./auth/resource";
 import { data } from "./data/resource";
 
 const REGION = "us-east-1";
-const customBucketArn = "brand-workload-content-dx0n-eocw-s3-dev";
+const customBucketArn = "arn:aws:s3:::brand-workload-content-dx0n-eocw-s3-dev";
 
 export const backend = defineBackend({
   auth,
