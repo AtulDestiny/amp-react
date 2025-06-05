@@ -1,5 +1,7 @@
 import { a } from "@aws-amplify/backend";
 
+import { uploadS3Function } from "../function/resource"
+
 export const UploadFileS3 = a.mutation()
   .arguments({
     key: a.string().required(),
@@ -13,5 +15,5 @@ export const UploadFileS3 = a.mutation()
   )
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
-    a.handler.function("uploadS3Function")
+    a.handler.function(uploadS3Function)
   );
