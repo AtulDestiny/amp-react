@@ -11,6 +11,7 @@ export const UploadFileS3 = a.mutation()
       key: a.string().required(),
     })
   )
+  .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.function("uploadS3Function")
   );
