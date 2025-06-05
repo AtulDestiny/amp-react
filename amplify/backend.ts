@@ -19,6 +19,7 @@ export const backend = defineBackend({
 });
 
 const customBucketStack = backend.createStack("custom-bucket-stack");
+const targetLambdaArn = "arn:aws:lambda:us-east-1:992382535498:function:test-dev-amplify-app";
 
 const customBucket = Bucket.fromBucketAttributes(
   customBucketStack,
@@ -92,4 +93,14 @@ if (backend.uploadS3Function.resources.lambda.role) {
       resources: [`${customBucket.bucketArn}/*`],
     })
   );
+}
+
+if (backend.executeFlowFunction.resources.lambda.role) {
+  backend.executeFlowFunction.resources.lambda.role.addToPrincipalPolicy(
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ["lambda:InvokeFunction"],
+      resources: [targetLambdaArn],
+    })
+  )
 }
