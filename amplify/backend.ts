@@ -65,13 +65,22 @@ if (backend.auth?.resources?.unauthenticatedUserIamRole) {
   backend.auth.resources.unauthenticatedUserIamRole.attachInlinePolicy(unauthPolicy);
 }
 
-// ✅ Grant S3 write access to uploadS3Function's Lambda role
+if (backend.getS3Function.resources.lambda.role) {
+  backend.getS3Function.resources.lambda.role.addToPrincipalPolicy(
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ["s3:GetObject"],
+      resources: [`${customBucket.bucketArn}/*`],
+    })
+  );
+}
+
 if (backend.uploadS3Function.resources.lambda.role) {
   backend.uploadS3Function.resources.lambda.role.addToPrincipalPolicy(
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ["s3:PutObject"],
-      resources: [`${customBucket.bucketArn}/*`], // covers all paths
+      resources: [`${customBucket.bucketArn}/*`],
     })
   );
 }
