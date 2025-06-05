@@ -3,7 +3,7 @@ import { Effect, Policy, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { auth } from "./auth/resource";
 import { data } from "./data/resource";
-import { myFirstFunction } from "./function/resource";
+import { getS3Function , uploadS3Function } from "./function/resource";
 
 const REGION = "us-east-1";
 const customBucketArn = "arn:aws:s3:::brand-workload-content-dx0n-eocw-s3-dev";
@@ -11,7 +11,8 @@ const customBucketArn = "arn:aws:s3:::brand-workload-content-dx0n-eocw-s3-dev";
 export const backend = defineBackend({
   auth,
   data,
-  myFirstFunction
+  getS3Function,
+  uploadS3Function,
 });
 
 const customBucketStack = backend.createStack("custom-bucket-stack");
