@@ -1,22 +1,26 @@
+import {
+  S3Client,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-import AWS from 'aws-sdk';
+const s3 = new S3Client({ region: "us-east-1" }); // or your region
 
-const s3 = new AWS.S3();
-
-export const handler = async (event : any) => {
-  const bucketName = 'brand-workload-content-dx0n-eocw-s3-dev';
+export const handler = async (event: any) => {
+  const bucketName = "brand-workload-content-dx0n-eocw-s3-dev";
   const key = event.arguments.key;
 
   try {
-    const signedUrl = s3.getSignedUrl('getObject', {
+    const command = new GetObjectCommand({
       Bucket: bucketName,
       Key: key,
-      Expires: 60 * 5, // URL valid for 5 minutes
     });
+
+    const signedUrl = await getSignedUrl(s3, command, { expiresIn: 60 * 5 });
 
     return {
       url: signedUrl,
-      key: key,
+      key,
     };
   } catch (err) {
     console.error(err);
