@@ -1,0 +1,10 @@
+[
+  {
+    "Action": [
+      "s3:GetObject",
+      "s3:PutObject"
+    ],
+    "Effect": "Allow",
+    "Resource": "arn:aws:s3:::brand-workload-content-dx0n-eocw-s3-dev/*"
+  }
+]
