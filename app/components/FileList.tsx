@@ -22,6 +22,7 @@ export default function FileList() {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isGridView, setIsGridView] = useState(true);
 
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return "0 Bytes";
@@ -123,76 +124,86 @@ export default function FileList() {
   }
 
   return (
-    <div className="space-y-4">
-      {/* Refresh button above file list */}
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={fetchFiles}
-          className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200"
-          aria-label="Refresh file list"
+  <div className="space-y-4">
+    {/* Toolbar with Refresh and View Toggle */}
+    <div className="flex justify-between items-center mb-4">
+      <button
+        onClick={fetchFiles}
+        className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200"
+        aria-label="Refresh file list"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5 mr-2 animate-spin-slow"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          {/* Refresh SVG Icon */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 mr-2 animate-spin-slow"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 4v5h.582M20 20v-5h-.581M4.582 9A7.002 7.002 0 0112 5v0a7 7 0 017 7v0a7.002 7.002 0 01-6.418 6.978"
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 4v5h.582M20 20v-5h-.581M4.582 9A7.002 7.002 0 0112 5v0a7 7 0 017 7v0a7.002 7.002 0 01-6.418 6.978"
+          />
+        </svg>
+        Refresh
+      </button>
+
+      {/* Grid/List Toggle */}
+      <button
+        onClick={() => setIsGridView(!isGridView)}
+        className="text-sm text-blue-600 hover:underline"
+      >
+        {isGridView ? 'Switch to List View' : 'Switch to Grid View'}
+      </button>
+    </div>
+
+    {/* File Cards */}
+    <div className={isGridView ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" : "space-y-4"}>
+      {files.map((file) => (
+        <div
+          key={file.key}
+          className={`bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 ${
+            isGridView ? "flex flex-col" : "flex items-center space-x-4"
+          }`}
+        >
+          {/* Thumbnail */}
+          <div className={isGridView ? "w-full h-40 mb-2" : "w-16 h-16 flex-shrink-0"}>
+            <img
+              src={file.url}
+              alt={file.key.split("/").pop()}
+              className="object-cover w-full h-full rounded-md border border-gray-200"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "/placeholder.png";
+              }}
             />
-          </svg>
-          Refresh
-        </button>
-      </div>
-      <div className="grid grid-cols-1 gap-4">
-        {files.map((file) => (
-          <div
-            key={file.key}
-            className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
-          >
-            <div className="flex items-center space-x-4">
-              {/* Thumbnail */}
-              <div className="w-16 h-16 flex-shrink-0">
-                <img
-                  src={file.url}
-                  alt={file.key.split("/").pop()}
-                  className="object-cover w-full h-full rounded-md border border-gray-200"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = "/placeholder.png"; // fallback image if needed
-                  }}
-                />
-              </div>
+          </div>
 
-              {/* File Info */}
-              <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-900 truncate">
-                  {file.key.split("/").pop()}
-                </h3>
-                <div className="mt-1 flex items-center text-sm text-gray-500">
-                  <span>{formatFileSize(file.size)}</span>
-                  <span className="mx-2">•</span>
-                  <span>{formatDate(file.lastModified)}</span>
-                </div>
-              </div>
-
-              {/* Download Button */}
-              <div className="ml-4 flex-shrink-0">
-                <button
-                  onClick={() => handleDownload(file)}
-                  className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Download
-                </button>
-              </div>
+          {/* File Info */}
+          <div className={isGridView ? "flex-1" : "flex-1 min-w-0"}>
+            <h3 className="text-sm font-medium text-gray-900 truncate">
+              {file.key.split("/").pop()}
+            </h3>
+            <div className="mt-1 text-sm text-gray-500">
+              <span>{formatFileSize(file.size)}</span>
+              <span className="mx-2">•</span>
+              <span>{formatDate(file.lastModified)}</span>
             </div>
           </div>
-        ))}
-      </div>
+
+          {/* Download Button */}
+          <div className={isGridView ? "mt-3" : "ml-4 flex-shrink-0"}>
+            <button
+              onClick={() => handleDownload(file)}
+              className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Download
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
-  );
+  </div>
+);
+
 }
