@@ -61,7 +61,7 @@ const unauthPolicy = new Policy(backend.stack, "customBucketUnauthPolicy", {
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ["s3:ListBucket"],
-      resources: [customBucket.bucketArn], // ✅ fix
+      resources: [customBucket.bucketArn],
       conditions: {
         StringLike: {
           "s3:prefix": ["public/", "public/*"],
@@ -93,11 +93,6 @@ if (backend.listS3Function.resources.lambda.role) {
       effect: Effect.ALLOW,
       actions: ["s3:ListBucket"],
       resources: [customBucket.bucketArn],
-      conditions: {
-        StringLike: {
-          "s3:prefix": ["public/", "public/*"],
-        },
-      },
     })
   );
 }

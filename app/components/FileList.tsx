@@ -11,7 +11,7 @@ interface FileItem {
 }
 
 interface ListFilesResponse {
-  listFilesS3: {
+  ListFilesS3: {
     files: FileItem[];
   };
 }
@@ -43,7 +43,7 @@ export default function FileList() {
       const response = await client.graphql({
         query: `
           query ListFilesS3($prefix: String) {
-            listFilesS3(prefix: $prefix) {
+            ListFilesS3(prefix: $prefix) {
               files {
                 key
                 url
@@ -59,7 +59,7 @@ export default function FileList() {
       }) as GraphQLResult<ListFilesResponse>;
 
       if (response.data) {
-        setFiles(response.data.listFilesS3.files);
+        setFiles(response.data.ListFilesS3.files);
       }
     } catch (error) {
       console.error('Error fetching files:', error);
