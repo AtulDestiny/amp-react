@@ -5,6 +5,7 @@ import { Author } from "./models/author";
 import { GetFileS3 } from "../customResolvers/getFileS3";
 import { UploadFileS3 } from "../customResolvers/uploadFileS3";
 import { ExecuteFlow } from "../customResolvers/executeFlow";
+import { ListFilesS3 } from "../customResolvers/listFilesS3";
 
 const schema = a.schema({
   TestCustomEntity,
@@ -13,6 +14,7 @@ const schema = a.schema({
   GetFileS3,
   UploadFileS3,
   ExecuteFlow,
+  ListFilesS3,
 });
 
 export type Schema = ClientSchema<typeof schema>;
