@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { generateClient } from 'aws-amplify/api';
-import { type Schema } from '../../amplify/data/resource';
-import { GraphQLResult } from '@aws-amplify/api';
+import { useState, useEffect } from "react";
+import { generateClient } from "aws-amplify/api";
+import { type Schema } from "../../amplify/data/resource";
+import { GraphQLResult } from "@aws-amplify/api";
 
 interface FileItem {
   key: string;
@@ -24,15 +24,34 @@ export default function FileList() {
   const [error, setError] = useState<string | null>(null);
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
+
+  const handleDownload = async (file: FileItem) => {
+    try {
+      const response = await fetch(file.url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = file.key.split("/").pop() || "downloaded-file";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Failed to download file:", err);
+      alert("Download failed. Please try again.");
+    }
   };
 
   const fetchFiles = async () => {
@@ -40,7 +59,7 @@ export default function FileList() {
       setLoading(true);
       setError(null);
 
-      const response = await client.graphql({
+      const response = (await client.graphql({
         query: `
           query ListFilesS3($prefix: String) {
             ListFilesS3(prefix: $prefix) {
@@ -51,30 +70,29 @@ export default function FileList() {
         variables: {
           prefix: "uploads/",
         },
-      }) as GraphQLResult<ListFilesResponse>;
+      })) as GraphQLResult<ListFilesResponse>;
 
       if (response.data) {
-  let fetchedFiles = response.data.ListFilesS3.files;
+        let fetchedFiles = response.data.ListFilesS3.files;
 
-  // If `files` is a string, try to parse it
-  if (typeof fetchedFiles === 'string') {
-    try {
-      fetchedFiles = JSON.parse(fetchedFiles);
-    } catch (parseErr) {
-      console.error("Failed to parse files string:", parseErr);
-      setError('Invalid files data format.');
-      setFiles([]);
-      setLoading(false);
-      return;
-    }
-  }
+        // If `files` is a string, try to parse it
+        if (typeof fetchedFiles === "string") {
+          try {
+            fetchedFiles = JSON.parse(fetchedFiles);
+          } catch (parseErr) {
+            console.error("Failed to parse files string:", parseErr);
+            setError("Invalid files data format.");
+            setFiles([]);
+            setLoading(false);
+            return;
+          }
+        }
 
-  setFiles(fetchedFiles);
-}
-
+        setFiles(fetchedFiles);
+      }
     } catch (error) {
-      console.error('Error fetching files:', error);
-      setError('Failed to load files. Please try again.');
+      console.error("Error fetching files:", error);
+      setError("Failed to load files. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -93,11 +111,7 @@ export default function FileList() {
   }
 
   if (error) {
-    return (
-      <div className="bg-red-50 text-red-700 p-4 rounded-lg">
-        {error}
-      </div>
-    );
+    return <div className="bg-red-50 text-red-700 p-4 rounded-lg">{error}</div>;
   }
 
   if (files.length === 0) {
@@ -116,10 +130,23 @@ export default function FileList() {
             key={file.key}
             className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              {/* Thumbnail */}
+              <div className="w-16 h-16 flex-shrink-0">
+                <img
+                  src={file.url}
+                  alt={file.key.split("/").pop()}
+                  className="object-cover w-full h-full rounded-md border border-gray-200"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/placeholder.png"; // fallback image if needed
+                  }}
+                />
+              </div>
+
+              {/* File Info */}
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-medium text-gray-900 truncate">
-                  {file.key.split('/').pop()}
+                  {file.key.split("/").pop()}
                 </h3>
                 <div className="mt-1 flex items-center text-sm text-gray-500">
                   <span>{formatFileSize(file.size)}</span>
@@ -127,15 +154,15 @@ export default function FileList() {
                   <span>{formatDate(file.lastModified)}</span>
                 </div>
               </div>
+
+              {/* Download Button */}
               <div className="ml-4 flex-shrink-0">
-                <a
-                  href={file.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => handleDownload(file)}
                   className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Download
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -143,4 +170,4 @@ export default function FileList() {
       </div>
     </div>
   );
-} 
+}
