@@ -70,7 +70,7 @@ export default function FileList() {
           }
         `,
         variables: {
-          prefix: "uploads/",
+          prefix: "amp-app/",
         },
       })) as GraphQLResult<ListFilesResponse>;
 
