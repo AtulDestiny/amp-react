@@ -124,6 +124,31 @@ export default function FileList() {
 
   return (
     <div className="space-y-4">
+      {/* Refresh button above file list */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={fetchFiles}
+          className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200"
+          aria-label="Refresh file list"
+        >
+          {/* Refresh SVG Icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2 animate-spin-slow"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 4v5h.582M20 20v-5h-.581M4.582 9A7.002 7.002 0 0112 5v0a7 7 0 017 7v0a7.002 7.002 0 01-6.418 6.978"
+            />
+          </svg>
+          Refresh
+        </button>
+      </div>
       <div className="grid grid-cols-1 gap-4">
         {files.map((file) => (
           <div
