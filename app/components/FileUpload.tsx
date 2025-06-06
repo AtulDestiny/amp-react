@@ -22,10 +22,10 @@ interface GetFileResponse {
 Amplify.configure({
   API: {
     GraphQL: {
-      endpoint: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? '',
+      endpoint: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? 'https://x7xgwafhwjeqbbk4qqt7jzkst4.appsync-api.us-east-1.amazonaws.com/graphql',
       region: "us-east-1",
       defaultAuthMode: "apiKey",
-      apiKey: process.env.NEXT_PUBLIC_API_KEY ?? ''
+      apiKey: process.env.NEXT_PUBLIC_API_KEY ?? 'https://x7xgwafhwjeqbbk4qqt7jzkst4.appsync-api.us-east-1.amazonaws.com/graphql'
     }
   },
   Storage: {
@@ -52,9 +52,9 @@ export default function FileUpload() {
 
   useEffect(() => {
     // Verify configuration on component mount
-    if (!process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || !process.env.NEXT_PUBLIC_API_KEY) {
-      setError('API configuration is missing. Please check your environment variables.');
-    }
+    // if (!process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || !process.env.NEXT_PUBLIC_API_KEY) {
+    //   setError('API configuration is missing. Please check your environment variables.');
+    // }
   }, []);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
