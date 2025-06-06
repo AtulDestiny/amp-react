@@ -10,8 +10,8 @@ export default function App() {
           {/* Gallery Box */}
           <Link href="/gallery" className="no-underline">
             <div className="border-2 border-gray-300 p-8 rounded-2xl shadow-md hover:shadow-lg transition duration-300 w-48 text-center">
-              <h2 className="text-xl font-semibold">Gallery</h2>
-              <p className="text-gray-500 mt-2">View uploaded files</p>
+              <h2 className="text-xl font-semibold">Content</h2>
+              <p className="text-gray-500 mt-2">View uploaded content</p>
             </div>
           </Link>
 

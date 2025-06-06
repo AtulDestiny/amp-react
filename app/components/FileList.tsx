@@ -89,7 +89,10 @@ export default function FileList() {
           }
         }
 
-        setFiles(fetchedFiles);
+        const sortedFiles = fetchedFiles.toSorted(
+        (a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime()
+        );
+        setFiles(sortedFiles);
       }
     } catch (error) {
       console.error("Error fetching files:", error);
