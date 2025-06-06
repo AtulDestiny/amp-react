@@ -117,7 +117,6 @@ export default function Flows() {
         },
       })) as GraphQLResult<ExecuteFlowResponse>;
 
-      console.log("Mutation response:", result.data);
       if (result.data?.ExecuteFlow) {
         setLambdaResponse(result.data.ExecuteFlow);
       }
@@ -129,7 +128,7 @@ export default function Flows() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <main className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-8">
