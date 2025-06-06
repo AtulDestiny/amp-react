@@ -95,6 +95,13 @@ if (backend.listS3Function.resources.lambda.role) {
       resources: [customBucket.bucketArn],
     })
   );
+   backend.listS3Function.resources.lambda.role.addToPrincipalPolicy(
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ["s3:GetObject"],
+      resources: [`${customBucket.bucketArn}/*`],
+    })
+  );
 }
 
 if (backend.uploadS3Function.resources.lambda.role) {

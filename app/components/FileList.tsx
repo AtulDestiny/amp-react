@@ -44,12 +44,7 @@ export default function FileList() {
         query: `
           query ListFilesS3($prefix: String) {
             ListFilesS3(prefix: $prefix) {
-              files {
-                key
-                url
-                lastModified
-                size
-              }
+              files
             }
           }
         `,
@@ -59,8 +54,24 @@ export default function FileList() {
       }) as GraphQLResult<ListFilesResponse>;
 
       if (response.data) {
-        setFiles(response.data.ListFilesS3.files);
-      }
+  let fetchedFiles = response.data.ListFilesS3.files;
+
+  // If `files` is a string, try to parse it
+  if (typeof fetchedFiles === 'string') {
+    try {
+      fetchedFiles = JSON.parse(fetchedFiles);
+    } catch (parseErr) {
+      console.error("Failed to parse files string:", parseErr);
+      setError('Invalid files data format.');
+      setFiles([]);
+      setLoading(false);
+      return;
+    }
+  }
+
+  setFiles(fetchedFiles);
+}
+
     } catch (error) {
       console.error('Error fetching files:', error);
       setError('Failed to load files. Please try again.');
