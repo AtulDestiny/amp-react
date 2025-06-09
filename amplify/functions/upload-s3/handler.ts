@@ -4,6 +4,7 @@ import {
   PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { defineFunction } from "@aws-amplify/backend";
 
 const s3 = new S3Client({ region: "us-east-1" });
 
@@ -16,6 +17,12 @@ export const handler = async (event: any) => {
     Bucket: bucketName,
     Key: key,
     ContentType: contentType,
+    Metadata: {
+      "x-amz-meta-genera-brand-id": process.env.BRAND_ID || "",
+      "x-amz-meta-genera-client-id": process.env.CLIENT_ID || "",
+      "x-amz-meta-genera-is-public": process.env.IS_PUBLIC || "false",
+      "x-amz-meta-genera-parent-folder-id": process.env.PARENT_FOLDER_ID || ""
+    }
   };
 
   const command = new PutObjectCommand(input);
@@ -26,3 +33,14 @@ export const handler = async (event: any) => {
     key,
   };
 };
+
+export const uploadS3Function = defineFunction({
+  name: "uploadS3Function",
+  entry: "./handler.ts",
+  environment: {
+    BRAND_ID: "eocw",
+    CLIENT_ID: "dx0n",
+    IS_PUBLIC: "false",
+    PARENT_FOLDER_ID: "oyyv"
+  }
+});
