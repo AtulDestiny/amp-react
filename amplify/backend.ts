@@ -21,7 +21,6 @@ export const backend = defineBackend({
 });
 
 const customBucketStack = backend.createStack("custom-bucket-stack");
-const targetLambdaArn = "arn:aws:lambda:us-east-1:992382535498:function:test-dev-amplify-app";
 
 const customBucket = Bucket.fromBucketAttributes(
   customBucketStack,
@@ -61,7 +60,7 @@ const unauthPolicy = new Policy(backend.stack, "customBucketUnauthPolicy", {
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ["s3:ListBucket"],
-      resources: [customBucket.bucketArn],
+      resources: [`${customBucket.bucketArn}`],
       conditions: {
         StringLike: {
           "s3:prefix": ["public/", "public/*"],
@@ -95,7 +94,7 @@ if (backend.listS3Function.resources.lambda.role) {
       resources: [customBucket.bucketArn],
     })
   );
-   backend.listS3Function.resources.lambda.role.addToPrincipalPolicy(
+  backend.listS3Function.resources.lambda.role.addToPrincipalPolicy(
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ["s3:GetObject"],
@@ -121,5 +120,5 @@ if (backend.executeFlowFunction.resources.lambda.role) {
       actions: ["lambda:InvokeFunction"],
       resources: [targetLambdaArn],
     })
-  )
+  );
 }
