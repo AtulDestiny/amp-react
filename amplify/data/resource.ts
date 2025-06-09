@@ -1,5 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
-import { TestCustomEntity } from "./models/test-custom-entity";
+import { CustomTable } from "./models/custom-table";
 import { Article } from "./models/article";
 import { Author } from "./models/author";
 import { GetFileS3 } from "../customResolvers/getFileS3";
@@ -15,7 +15,7 @@ import {
 } from "../customResolvers/dynamoDB";
 
 const schema = a.schema({
-  TestCustomEntity,
+  CustomTable,
   Article,
   Author,
   GetFileS3,
