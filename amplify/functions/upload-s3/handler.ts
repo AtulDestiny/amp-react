@@ -16,12 +16,6 @@ export const handler = async (event: any) => {
     Bucket: bucketName,
     Key: key,
     ContentType: contentType,
-    Metadata: {
-      "genera-brand-id": process.env.BRAND_ID || "",
-      "genera-client-id": process.env.CLIENT_ID || "",
-      "genera-is-public": process.env.IS_PUBLIC || "false",
-      "genera-parent-folder-id": process.env.PARENT_FOLDER_ID || ""
-    }
   };
 
   const command = new PutObjectCommand(input);
@@ -32,4 +26,3 @@ export const handler = async (event: any) => {
     key,
   };
 };
-
