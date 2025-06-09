@@ -17,10 +17,10 @@ export const handler = async (event: any) => {
     Key: key,
     ContentType: contentType,
     Metadata: {
-      "x-amz-meta-genera-brand-id": process.env.BRAND_ID || "",
-      "x-amz-meta-genera-client-id": process.env.CLIENT_ID || "",
-      "x-amz-meta-genera-is-public": process.env.IS_PUBLIC || "false",
-      "x-amz-meta-genera-parent-folder-id": process.env.PARENT_FOLDER_ID || ""
+      "genera-brand-id": process.env.BRAND_ID || "",
+      "genera-client-id": process.env.CLIENT_ID || "",
+      "genera-is-public": process.env.IS_PUBLIC || "false",
+      "genera-parent-folder-id": process.env.PARENT_FOLDER_ID || ""
     }
   };
 
