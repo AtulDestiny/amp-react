@@ -4,7 +4,7 @@ const docClient = new DynamoDB.DocumentClient();
 const TABLE_NAME = process.env.TABLE_NAME!;
 
 export const handler = async (event: any) => {
-  const { id, ...updates } = event.arguments;
+  const { id, ...updates } = event.arguments.input;
 
   if (!id || Object.keys(updates).length === 0) {
     throw new Error("Missing 'id' or fields to update");
