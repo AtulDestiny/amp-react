@@ -6,6 +6,13 @@ import { GetFileS3 } from "../customResolvers/getFileS3";
 import { UploadFileS3 } from "../customResolvers/uploadFileS3";
 import { ExecuteFlow } from "../customResolvers/executeFlow";
 import { ListFilesS3 } from "../customResolvers/listFilesS3";
+import {
+  GetItem,
+  AddItem,
+  DeleteItem,
+  ListItems,
+  UpdateItem,
+} from "../customResolvers/dynamoDB";
 
 const schema = a.schema({
   TestCustomEntity,
@@ -15,6 +22,11 @@ const schema = a.schema({
   UploadFileS3,
   ExecuteFlow,
   ListFilesS3,
+  GetItem,
+  AddItem,
+  DeleteItem,
+  ListItems,
+  UpdateItem,
 });
 
 export type Schema = ClientSchema<typeof schema>;
