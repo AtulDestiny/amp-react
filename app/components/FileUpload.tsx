@@ -82,7 +82,7 @@ export default function FileUpload() {
           }
         `,
         variables: {
-          key: `uploads/${Date.now()}-${selectedFile.name}`,
+          key: `amp-app/${Date.now()}-${selectedFile.name}`,
           contentType: selectedFile.type,
         },
       }) as GraphQLResult<UploadFileResponse>;
