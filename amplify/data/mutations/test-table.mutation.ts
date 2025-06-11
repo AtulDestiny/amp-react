@@ -12,10 +12,6 @@ export const testCustomMethodCustomMutationFunction = defineFunction({
 
 export const testCustomMethodCustomMutation = a
   .mutation()
-  .arguments({
-    stateMachineArn: a.string().required(),
-    payload: a.json().required(),
-  })
   .returns(
     a.customType({
       executedVersion: a.string(),
