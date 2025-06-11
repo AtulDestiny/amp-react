@@ -1,6 +1,7 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { CustomTable } from "./models/custom-table";
 import { AddCustomMethodCustomMutation } from "./mutations/custom-table.mutation";
+import { testCustomMethodCustomMutation } from "./mutations/test-table.mutation";
 import { Article } from "./models/article";
 import { Author } from "./models/author";
 import { GetFileS3 } from "../customResolvers/getFileS3";
@@ -18,6 +19,7 @@ import {
 const schema = a.schema({
   CustomTable,
   AddCustomMethodCustomMutation,
+  testCustomMethodCustomMutation,
   Article,
   Author,
   GetFileS3,
