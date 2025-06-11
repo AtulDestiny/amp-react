@@ -12,6 +12,8 @@ import { updateFunction } from "./functions/dynamoDB/update/resource";
 import { getFunction } from "./functions/dynamoDB/get/resource";
 import { deleteFunction } from "./functions/dynamoDB/delete/resource";
 import { listFunction } from "./functions/dynamoDB/list/resource";
+import { testCustomMethodCustomMutationFunction } from "./data/mutations/test-table.mutation";
+import { AddCustomMethodCustomMutationFunction } from "./data/mutations/custom-table.mutation";
 
 const REGION = "us-east-1";
 const customBucketArn = "arn:aws:s3:::brand-workload-content-dx0n-eocw-s3-dev";
@@ -28,6 +30,8 @@ export const backend = defineBackend({
   getFunction,
   deleteFunction,
   listFunction,
+  testCustomMethodCustomMutationFunction,
+  AddCustomMethodCustomMutationFunction,
 });
 
 const customBucketStack = backend.createStack("custom-bucket-stack");
@@ -127,6 +131,26 @@ if (backend.uploadS3Function.resources.lambda.role) {
 
 if (backend.executeFlowFunction.resources.lambda.role) {
   backend.executeFlowFunction.resources.lambda.role.addToPrincipalPolicy(
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ["lambda:InvokeFunction"],
+      resources: [targetLambdaArn],
+    })
+  );
+}
+
+if (backend.testCustomMethodCustomMutationFunction.resources.lambda.role) {
+  backend.testCustomMethodCustomMutationFunction.resources.lambda.role.addToPrincipalPolicy(
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ["lambda:InvokeFunction"],
+      resources: [targetLambdaArn],
+    })
+  );
+}
+
+if (backend.AddCustomMethodCustomMutationFunction.resources.lambda.role) {
+  backend.AddCustomMethodCustomMutationFunction.resources.lambda.role.addToPrincipalPolicy(
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ["lambda:InvokeFunction"],
