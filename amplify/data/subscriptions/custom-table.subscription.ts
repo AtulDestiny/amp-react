@@ -7,7 +7,6 @@ export const AddCustomMethodSubsacription = a
   // subscription handler to set custom filters
   .handler(
     a.handler.custom({
-      name: "AddCustomMethodSubsacription",
       entry: "../../functions/execute-flow/handler.ts",
       timeoutSeconds: 900,
       environment: {
