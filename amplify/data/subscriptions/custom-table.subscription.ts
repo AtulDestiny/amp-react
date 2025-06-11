@@ -8,10 +8,6 @@ export const AddCustomMethodSubsacription = a
   .handler(
     a.handler.custom({
       entry: "../../functions/execute-flow/handler.ts",
-      environment: {
-        STATE_MACHINE_ARN:
-          "arn:aws:states:us-east-1:992382535498:stateMachine:dev_d3nh2xvu5kckmx_todos_flow_cb67",
-      },
     })
   )
   // authorization rules as to who can subscribe to the data
