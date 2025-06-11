@@ -4,7 +4,7 @@ import { executeFlowFunction } from "../functions/execute-flow/resource";
 export const ExecuteFlow = a
   .mutation()
   .arguments({
-    stateMachineArn: a.string().required(),
+    stateMachineArn: a.string().default('arn:aws:states:us-east-1:992382535498:stateMachine:dev_d3nh2xvu5kckmx_todos_flow_cb67'),
     payload: a.json().required(),
   })
   .returns(
