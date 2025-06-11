@@ -5,6 +5,7 @@ export const ExecuteFlow = a
   .mutation()
   .arguments({
     stateMachineArn: a.string().required(),
+    type: a.string().required(),
     payload: a.json().required(),
   })
   .returns(

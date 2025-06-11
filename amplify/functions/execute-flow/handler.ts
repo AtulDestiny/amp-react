@@ -5,18 +5,31 @@ const lambda = new LambdaClient({});
 
 export const handler: Handler = async (event, context) => {
   const stateMachineArn = event.arguments.stateMachineArn;
+  const type = event.arguments.type;
   const payload = event.arguments.payload;
 
-  if (!stateMachineArn || !payload) {
+  if (!stateMachineArn) {
     return {
-      error: "Missing required fields: stateMachineArn and payload",
+      error: "Missing stateMachineArn",
+    };
+  }
+
+  if (!payload) {
+    return {
+      error: "Missing payload",
+    };
+  }
+
+  if (!type) {
+    return {
+      error: "Missing type (STANDARD or EXPRESS)",
     };
   }
 
   const command = new InvokeCommand({
     FunctionName:
       "arn:aws:lambda:us-east-1:992382535498:function:test-dev-amplify-app",
-    Payload: Buffer.from(JSON.stringify({ stateMachineArn, payload })),
+    Payload: Buffer.from(JSON.stringify({ stateMachineArn, type, payload })),
     LogType: LogType.Tail,
   });
 
