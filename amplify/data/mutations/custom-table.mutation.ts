@@ -7,6 +7,7 @@ export const AddCustomMethodCustomMutationFunction = defineFunction({
     environment : {
       STATE_MACHINE_ARN : "arn:aws:states:us-east-1:992382535498:stateMachine:dev_d3nh2xvu5kckmx_todos_flow_cb67",
       PAYLOAD : JSON.stringify({ limit : 5 }),
+      TYPE: 'EXPRESS'
     }
   })
 
