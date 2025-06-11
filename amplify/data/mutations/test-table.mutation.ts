@@ -24,8 +24,8 @@ export const testCustomMethodCustomMutation = a
   )
   .authorization((allow) => [allow.publicApiKey()])
   .handler(a.handler.function( defineFunction({
-    name: "executeFlowFunction",
-    entry: "./handler.ts",
+    name: "testCustomMethodCustomMutation",
+    entry: "../../functions/execute-flow/handler.ts",
     timeoutSeconds: 900,
     environment : {
       STATE_MACHINE_ARN : "arn:aws:states:us-east-1:992382535498:express:dev_d3nh2xvu5kckmx_user_sync_flow_ab12"
