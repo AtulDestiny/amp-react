@@ -14,10 +14,12 @@ import {
   ListItems,
   UpdateItem,
 } from "../customResolvers/dynamoDB";
+import { AddCustomMethodSubsacription } from "./subscriptions/custom-table.subscription";
 
 const schema = a.schema({
   CustomTable,
   AddCustomMethodCustomMutation,
+  AddCustomMethodSubsacription,
   Article,
   Author,
   GetFileS3,

@@ -2,7 +2,7 @@ import { a, defineFunction } from "@aws-amplify/backend";
 
 export const AddCustomMethodSubsacription = a
   .subscription()
-  // subscribes to the 'publish' mutation
+  // subscribes to the 'AddCustomMethodCustomMutation' mutation
   .for(a.ref("AddCustomMethodCustomMutation"))
   // subscription handler to set custom filters
   .handler(
