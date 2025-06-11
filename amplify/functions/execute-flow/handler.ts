@@ -4,7 +4,7 @@ import { LambdaClient, InvokeCommand, LogType } from "@aws-sdk/client-lambda";
 const lambda = new LambdaClient({});
 
 export const handler: Handler = async (event, context) => {
-  const stateMachineArn = event.arguments.stateMachineArn;
+  const stateMachineArn = process.env.STATE_MACHINE_ARN;
   const payload = event.arguments.payload;
 
   if (!stateMachineArn || !payload) {

@@ -1,6 +1,6 @@
 import { a, defineFunction } from "@aws-amplify/backend";
 
-export const AddCustomMethodCustomMutation = a
+export const testCustomMethodCustomMutation = a
   .mutation()
   .arguments({
     stateMachineArn: a.string().required(),
@@ -28,6 +28,6 @@ export const AddCustomMethodCustomMutation = a
     entry: "./handler.ts",
     timeoutSeconds: 900,
     environment : {
-      STATE_MACHINE_ARN : "arn:aws:states:us-east-1:992382535498:stateMachine:dev_d3nh2xvu5kckmx_todos_flow_cb67"
+      STATE_MACHINE_ARN : "arn:aws:states:us-east-1:992382535498:express:dev_d3nh2xvu5kckmx_user_sync_flow_ab12"
     }
   })));
