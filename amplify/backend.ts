@@ -23,7 +23,6 @@ export const backend = defineBackend({
 
 const customBucketStack = backend.createStack("custom-bucket-stack");
 const targetLambdaArn = "arn:aws:lambda:us-east-1:992382535498:function:test-dev-amplify-app";
-const targetTableArn = "arn:aws:dynamodb:us-east-1:992382535498:table/Article-5p3j4x7cxbejlib64lfezxryiu-NONE";
 
 const customBucket = Bucket.fromBucketAttributes(
   customBucketStack,
