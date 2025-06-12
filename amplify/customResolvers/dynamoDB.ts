@@ -10,7 +10,7 @@ export const GetItem = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../functions/dynamoDB/getItem.ts",
+      entry: "./getItem.ts",
     })
   );
 
@@ -21,7 +21,7 @@ export const ListItems = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../functions/dynamoDB/listItems.ts",
+      entry: "./listItems.ts",
     })
   );
 
@@ -35,7 +35,7 @@ export const AddItem = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../functions/dynamoDB/addItem.ts",
+      entry: "./addItem.ts",
     })
   );
 
@@ -49,7 +49,7 @@ export const UpdateItem = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../functions/dynamoDB/updateItem.ts",
+      entry: "./updateItem.ts",
     })
   );
 
@@ -63,6 +63,6 @@ export const DeleteItem = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../functions/dynamoDB/deleteItem.ts",
+      entry: "./deleteItem.ts",
     })
   );
