@@ -8,7 +8,7 @@ import { listFunction } from "../functions/dynamoDB/list/resource";
 export const GetArticle = a
   .query()
   .arguments({
-    id: a.id().required(),
+    id: a.string().required(),
   })
   .returns(a.ref("Article"))
   .authorization((allow) => [allow.publicApiKey()])
@@ -33,10 +33,10 @@ export const ListArticles = a
 export const AddArticle = a
   .mutation()
   .arguments({
-    id: a.id(),
+    id: a.string(),
     title: a.string().required(),
     content: a.string().required(),
-    createdAt: a.datetime().required(),
+    createdAt: a.string().required(),
     authorId: a.string().required(),
   })
   .returns(a.ref("Article"))
@@ -51,10 +51,10 @@ export const AddArticle = a
 export const UpdateArticle = a
   .mutation()
   .arguments({
-    id: a.id().required(),
+    id: a.string().required(),
     title: a.string(),
     content: a.string(),
-    createdAt: a.datetime(),
+    createdAt: a.string(),
     authorId: a.string(),
   })
   .returns(a.ref("Article"))
@@ -69,7 +69,7 @@ export const UpdateArticle = a
 export const DeleteArticle = a
   .mutation()
   .arguments({
-    id: a.id().required(),
+    id: a.string().required(),
   })
   .returns(a.ref("Article"))
   .authorization((allow) => [allow.publicApiKey()])

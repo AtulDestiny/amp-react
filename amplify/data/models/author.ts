@@ -2,7 +2,7 @@ import { a } from "@aws-amplify/backend";
 
 export const Author = a.customType({
   authorId: a
-    .id()
+    .string()
     .required()
     .authorization((allow: any) => [
       allow.publicApiKey().to(["create", "read"]),

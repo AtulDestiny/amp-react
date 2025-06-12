@@ -8,7 +8,7 @@ import { listFunction } from "../functions/dynamoDB/list/resource";
 export const GetAuthor = a
   .query()
   .arguments({
-    authorId: a.id().required(),
+    authorId: a.string().required(),
   })
   .returns(a.ref("Author"))
   .authorization((allow) => [allow.publicApiKey()])
@@ -33,7 +33,7 @@ export const ListAuthors = a
 export const AddAuthor = a
   .mutation()
   .arguments({
-    authorId: a.id(),
+    authorId: a.string(),
     name: a.string().required(),
     email: a.string().required(),
   })
@@ -49,7 +49,7 @@ export const AddAuthor = a
 export const UpdateAuthor = a
   .mutation()
   .arguments({
-    authorId: a.id().required(),
+    authorId: a.string().required(),
     name: a.string(),
     email: a.string(),
   })
@@ -65,7 +65,7 @@ export const UpdateAuthor = a
 export const DeleteAuthor = a
   .mutation()
   .arguments({
-    authorId: a.id().required(),
+    authorId: a.string().required(),
   })
   .returns(a.ref("Author"))
   .authorization((allow) => [allow.publicApiKey()])
