@@ -4,9 +4,9 @@ import { Article } from "../data/models/article";
 export const GetArticle = a
   .query()
   .arguments({
-    id: a.id().required(),
+    id: a.string().required(),
   })
-  .returns(Article)
+  .returns(a.json())
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -17,7 +17,7 @@ export const GetArticle = a
 
 export const ListArticles = a
   .query()
-  .returns(Article)
+  .returns(a.json())
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -29,11 +29,7 @@ export const ListArticles = a
 export const AddArticle = a
   .mutation()
   .arguments({
-    id: a.id(),
-    title: a.string().required(),
-    content: a.string().required(),
-    createdAt: a.string().required(),
-    authorId: a.string().required(),
+   input: a.json().required(),
   })
   .returns(Article)
   .authorization((allow) => [allow.publicApiKey()])
@@ -47,11 +43,7 @@ export const AddArticle = a
 export const UpdateArticle = a
   .mutation()
   .arguments({
-    id: a.id().required(),
-    title: a.string(),
-    content: a.string(),
-    createdAt: a.string(),
-    authorId: a.string(),
+    input: a.json().required(),
   })
   .returns(Article)
   .authorization((allow) => [allow.publicApiKey()])
@@ -65,7 +57,7 @@ export const UpdateArticle = a
 export const DeleteArticle = a
   .mutation()
   .arguments({
-    id: a.id().required(),
+    id: a.string().required(),
   })
   .returns(Article)
   .authorization((allow) => [allow.publicApiKey()])
