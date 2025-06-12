@@ -1,12 +1,11 @@
 import { a } from "@aws-amplify/backend";
-import { Article } from "../data/models/article";
 
 export const GetArticle = a
   .query()
   .arguments({
-    id: a.string().required(),
+    id: a.id().required(),
   })
-  .returns(a.json())
+  .returns(a.ref("Article"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -17,7 +16,7 @@ export const GetArticle = a
 
 export const ListArticles = a
   .query()
-  .returns(a.json())
+  .returns(a.ref("Article").array())
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -29,9 +28,13 @@ export const ListArticles = a
 export const AddArticle = a
   .mutation()
   .arguments({
-   input: a.json().required(),
+    id: a.id(),
+    title: a.string().required(),
+    content: a.string().required(),
+    createdAt: a.string().required(),
+    authorId: a.string().required(),
   })
-  .returns(Article)
+  .returns(a.ref("Article"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -43,9 +46,13 @@ export const AddArticle = a
 export const UpdateArticle = a
   .mutation()
   .arguments({
-    input: a.json().required(),
+    id: a.id().required(),
+    title: a.string(),
+    content: a.string(),
+    createdAt: a.string(),
+    authorId: a.string(),
   })
-  .returns(Article)
+  .returns(a.ref("Article"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -57,9 +64,9 @@ export const UpdateArticle = a
 export const DeleteArticle = a
   .mutation()
   .arguments({
-    id: a.string().required(),
+    id: a.id().required(),
   })
-  .returns(Article)
+  .returns(a.ref("Article"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
