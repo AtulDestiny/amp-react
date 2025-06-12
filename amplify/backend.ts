@@ -47,7 +47,7 @@ const externalTable = aws_dynamodb.Table.fromTableName(
   "MyExternalAuthorTable",
   "Author-cx5qlkh4ozhn3jynbxzpnayedm-NONE"
 );
-backend.data.addDynamoDbDataSource("AuthorDataTable", externalTable);
+backend.data.addDynamoDbDataSource("AuthorTable", externalTable);
 
 const customBucketStack = backend.createStack("custom-bucket-stack");
 const targetLambdaArn =
