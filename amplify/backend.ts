@@ -45,7 +45,7 @@ const externalDataSourcesStack = backend.createStack("MyExternalDataSources");
 const externalTable = aws_dynamodb.Table.fromTableName(
   externalDataSourcesStack,
   "MyExternalAuthorTable",
-  "AuthorDataTable"
+  "Author-cx5qlkh4ozhn3jynbxzpnayedm-NONE"
 );
 backend.data.addDynamoDbDataSource("AuthorDataTable", externalTable);
 
