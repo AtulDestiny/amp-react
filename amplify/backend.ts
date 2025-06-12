@@ -126,56 +126,6 @@ if (backend.executeFlowFunction.resources.lambda.role) {
   );
 }
 
-if (backend.addFunction.resources.lambda.role) {
-  backend.addFunction.resources.lambda.role.addToPrincipalPolicy(
-    new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: ["dynamodb:PutItem"],
-      resources: [targetTableArn],
-    })
-  )
-}
-
-if (backend.updateFunction.resources.lambda.role) {
-  backend.updateFunction.resources.lambda.role.addToPrincipalPolicy(
-    new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: ["dynamodb:UpdateItem"],
-      resources: [targetTableArn],
-    })
-  )
-}
-
-if (backend.getFunction.resources.lambda.role) {
-  backend.getFunction.resources.lambda.role.addToPrincipalPolicy(
-    new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: ["dynamodb:GetItem"],
-      resources: [targetTableArn],
-    })
-  )
-}
-
-if (backend.deleteFunction.resources.lambda.role) {
-  backend.deleteFunction.resources.lambda.role.addToPrincipalPolicy(
-    new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: ["dynamodb:DeleteItem"],
-      resources: [targetTableArn],
-    })
-  )
-}
-
-if (backend.listFunction.resources.lambda.role) {
-  backend.listFunction.resources.lambda.role.addToPrincipalPolicy(
-    new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: ["dynamodb:Scan"],
-      resources: [targetTableArn],
-    })
-  )
-}
-
 const customTableStack = backend.createStack("ExternalTables");
 
 const AuthorTable = ddb.Table.fromTableName(customTableStack, "AuthorTable", "Author-5p3j4x7cxbejlib64lfezxryiu-NONE");
