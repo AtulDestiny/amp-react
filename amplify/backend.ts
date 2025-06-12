@@ -12,8 +12,12 @@ import { updateFunction } from "./functions/dynamoDB/update/resource";
 import { getFunction } from "./functions/dynamoDB/get/resource";
 import { deleteFunction } from "./functions/dynamoDB/delete/resource";
 import { listFunction } from "./functions/dynamoDB/list/resource";
-import { testCustomMethodCustomMutationFunction } from "./data/mutations/test-table.mutation";
-import { AddCustomMethodCustomMutationFunction } from "./data/mutations/custom-table.mutation";
+import {
+  Test1CustomMutationFunction,
+  Test2MethodCustomMutationFunction,
+  AuthorTestMethodCustomMutationFunction,
+} from "./data/mutations/author.mutation";
+import { AuthorCustomMethodCustomQueryFunction } from "./data/queries/author.query";
 
 const REGION = "us-east-1";
 const customBucketArn = "arn:aws:s3:::brand-workload-content-dx0n-eocw-s3-dev";
@@ -30,13 +34,17 @@ export const backend = defineBackend({
   getFunction,
   deleteFunction,
   listFunction,
-  testCustomMethodCustomMutationFunction,
-  AddCustomMethodCustomMutationFunction,
+  Test1CustomMutationFunction,
+  Test2MethodCustomMutationFunction,
+  AuthorTestMethodCustomMutationFunction,
+  AuthorCustomMethodCustomQueryFunction,
 });
 
 const customBucketStack = backend.createStack("custom-bucket-stack");
-const targetLambdaArn = "arn:aws:lambda:us-east-1:992382535498:function:test-dev-amplify-app";
-const targetTableArn = "arn:aws:dynamodb:us-east-1:992382535498:table/Article-5p3j4x7cxbejlib64lfezxryiu-NONE";
+const targetLambdaArn =
+  "arn:aws:lambda:us-east-1:992382535498:function:test-dev-amplify-app";
+const targetTableArn =
+  "arn:aws:dynamodb:us-east-1:992382535498:table/Article-5p3j4x7cxbejlib64lfezxryiu-NONE";
 
 const customBucket = Bucket.fromBucketAttributes(
   customBucketStack,
@@ -139,8 +147,26 @@ if (backend.executeFlowFunction.resources.lambda.role) {
   );
 }
 
-if (backend.testCustomMethodCustomMutationFunction.resources.lambda.role) {
-  backend.testCustomMethodCustomMutationFunction.resources.lambda.role.addToPrincipalPolicy(
+if (backend.Test1CustomMutationFunction.resources.lambda.role) {
+  backend.Test1CustomMutationFunction.resources.lambda.role.addToPrincipalPolicy(
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ["lambda:InvokeFunction"],
+      resources: [targetLambdaArn],
+    })
+  );
+}
+if (backend.Test2MethodCustomMutationFunction.resources.lambda.role) {
+  backend.Test2MethodCustomMutationFunction.resources.lambda.role.addToPrincipalPolicy(
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ["lambda:InvokeFunction"],
+      resources: [targetLambdaArn],
+    })
+  );
+}
+if (backend.AuthorTestMethodCustomMutationFunction.resources.lambda.role) {
+  backend.AuthorTestMethodCustomMutationFunction.resources.lambda.role.addToPrincipalPolicy(
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ["lambda:InvokeFunction"],
@@ -149,8 +175,8 @@ if (backend.testCustomMethodCustomMutationFunction.resources.lambda.role) {
   );
 }
 
-if (backend.AddCustomMethodCustomMutationFunction.resources.lambda.role) {
-  backend.AddCustomMethodCustomMutationFunction.resources.lambda.role.addToPrincipalPolicy(
+if (backend.AuthorCustomMethodCustomQueryFunction.resources.lambda.role) {
+  backend.AuthorCustomMethodCustomQueryFunction.resources.lambda.role.addToPrincipalPolicy(
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ["lambda:InvokeFunction"],
@@ -166,7 +192,7 @@ if (backend.addFunction.resources.lambda.role) {
       actions: ["dynamodb:PutItem"],
       resources: [targetTableArn],
     })
-  )
+  );
 }
 
 if (backend.updateFunction.resources.lambda.role) {
@@ -176,7 +202,7 @@ if (backend.updateFunction.resources.lambda.role) {
       actions: ["dynamodb:UpdateItem"],
       resources: [targetTableArn],
     })
-  )
+  );
 }
 
 if (backend.getFunction.resources.lambda.role) {
@@ -186,7 +212,7 @@ if (backend.getFunction.resources.lambda.role) {
       actions: ["dynamodb:GetItem"],
       resources: [targetTableArn],
     })
-  )
+  );
 }
 
 if (backend.deleteFunction.resources.lambda.role) {
@@ -196,7 +222,7 @@ if (backend.deleteFunction.resources.lambda.role) {
       actions: ["dynamodb:DeleteItem"],
       resources: [targetTableArn],
     })
-  )
+  );
 }
 
 if (backend.listFunction.resources.lambda.role) {
@@ -206,5 +232,5 @@ if (backend.listFunction.resources.lambda.role) {
       actions: ["dynamodb:Scan"],
       resources: [targetTableArn],
     })
-  )
+  );
 }
