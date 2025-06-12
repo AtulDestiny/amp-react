@@ -33,6 +33,36 @@ export const AddAuthor = a
     })
   );
 
+export const UpdateAuthor = a
+  .mutation()
+  .arguments({
+    authorId: a.string().required(),
+    name: a.string().required(),
+    email: a.string().required(),
+  })
+  .returns(a.ref("Author"))
+  .authorization((allow) => [allow.publicApiKey()])
+  .handler(
+    a.handler.custom({
+      dataSource: "AuthorTable",
+      entry: "./updateAuthor.js",
+    })
+  );
+
+export const DeleteAuthor = a
+  .mutation()
+  .arguments({
+    authorId: a.string().required(),
+  })
+  .returns(a.ref("Author"))
+  .authorization((allow) => [allow.publicApiKey()])
+  .handler(
+    a.handler.custom({
+      dataSource: "AuthorTable",
+      entry: "./deleteAuthor.js",
+    })
+  );
+
 export const Test1CustomMutation = a
   .mutation()
   .returns(

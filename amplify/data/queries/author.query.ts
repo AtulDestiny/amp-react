@@ -19,6 +19,20 @@ export const AuthorCustomMethodCustomQueryFunction = defineFunction({
   },
 });
 
+export const getAuthor = a
+  .query()
+  .arguments({
+    authorId: a.string().required(),
+  })
+  .returns(a.ref("Author"))
+  .authorization((allow) => [allow.publicApiKey()])
+  .handler(
+    a.handler.custom({
+      dataSource: "AuthorTable",
+      entry: "./getAuthor.js",
+    })
+  );
+
 export const AuthorCustomMethodCustomQuery = a
   .query()
   .returns(
