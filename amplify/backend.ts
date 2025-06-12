@@ -8,11 +8,6 @@ import { getS3Function } from "./functions/get-s3/resource";
 import { uploadS3Function } from "./functions/upload-s3/resource";
 import { executeFlowFunction } from "./functions/execute-flow/resource";
 import { listS3Function } from "./functions/list-s3/resource";
-import { addFunction } from "./functions/dynamoDB/add/resource";
-import { updateFunction } from "./functions/dynamoDB/update/resource";
-import { getFunction } from "./functions/dynamoDB/get/resource";
-import { deleteFunction } from "./functions/dynamoDB/delete/resource";
-import { listFunction } from "./functions/dynamoDB/list/resource";
 
 const REGION = "us-east-1";
 const customBucketArn = "arn:aws:s3:::brand-workload-content-dx0n-eocw-s3-dev";
@@ -24,11 +19,6 @@ export const backend = defineBackend({
   uploadS3Function,
   listS3Function,
   executeFlowFunction,
-  addFunction,
-  updateFunction,
-  getFunction,
-  deleteFunction,
-  listFunction,
 });
 
 const customBucketStack = backend.createStack("custom-bucket-stack");
