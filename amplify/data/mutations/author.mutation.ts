@@ -28,7 +28,7 @@ export const AddAuthor = a
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
-      dataSource: "AuthorTable",
+      dataSource: "AuthorDataTable",
       entry: "./addAuthor.js",
     })
   );
@@ -44,7 +44,7 @@ export const UpdateAuthor = a
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
-      dataSource: "AuthorTable",
+      dataSource: "AuthorDataTable",
       entry: "./updateAuthor.js",
     })
   );
@@ -58,7 +58,7 @@ export const DeleteAuthor = a
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
-      dataSource: "AuthorTable",
+      dataSource: "AuthorDataTable",
       entry: "./deleteAuthor.js",
     })
   );

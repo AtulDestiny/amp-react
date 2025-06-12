@@ -28,7 +28,7 @@ export const getAuthor = a
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
-      dataSource: "AuthorTable",
+      dataSource: "AuthorDataTable",
       entry: "./getAuthor.js",
     })
   );
