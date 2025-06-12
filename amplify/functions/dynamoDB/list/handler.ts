@@ -9,10 +9,9 @@ export function response(ctx: Context) {
   const { error, result } = ctx;
 
   if (error) {
-    if (!ctx.stash.errors) ctx.stash.errors = [];
-    ctx.stash.errors.push(error);
-    return util.appendError(error.message, error.type, result);
+    return util.appendError(error.message, error.type);
   }
+
   return {
     items: result.items,
     nextToken: result.nextToken,
