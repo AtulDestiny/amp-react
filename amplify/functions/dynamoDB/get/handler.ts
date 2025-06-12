@@ -5,10 +5,12 @@ export function request(ctx: Context) {
   return ddb.get({ key: { id: ctx.args.id } });
 }
 
-export function response(ctx: Context) {
+export const response = (ctx: Context) => {
   const { error, result } = ctx;
   if (error) {
-    return util.appendError(error.message, error.type);
+    if (!ctx.stash.errors) ctx.stash.errors = [];
+    ctx.stash.errors.push(error);
+    return util.appendError(error.message, error.type, result);
   }
-  return result;
-}
+  return ctx.result;
+};
