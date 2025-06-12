@@ -2,11 +2,17 @@ import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { CustomTable } from "./models/custom-table";
 import { Article } from "./models/article";
 import { Author } from "./models/author";
-import { AuthorCustomMethodCustomQuery } from "./queries/author.query";
+import {
+  AuthorCustomMethodCustomQuery,
+  getAuthor,
+} from "./queries/author.query";
 import {
   Test1CustomMutation,
   Test2MethodCustomMutation,
   AuthorTestMethodCustomMutation,
+  AddAuthor,
+  UpdateAuthor,
+  DeleteAuthor,
 } from "./mutations/author.mutation";
 import { GetFileS3 } from "../customResolvers/getFileS3";
 import { UploadFileS3 } from "../customResolvers/uploadFileS3";
@@ -37,6 +43,10 @@ const schema = a.schema({
   DeleteItem,
   ListItems,
   UpdateItem,
+  AddAuthor,
+  UpdateAuthor,
+  getAuthor,
+  DeleteAuthor,
 });
 
 export type Schema = ClientSchema<typeof schema>;
