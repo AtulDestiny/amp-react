@@ -17,6 +17,22 @@ export const Test1CustomMutationFunction = defineFunction({
   },
 });
 
+export const AddAuthor = a
+  .mutation()
+  .arguments({
+    authorId: a.string().required(),
+    name: a.string().required(),
+    email: a.string().required(),
+  })
+  .returns(a.ref("Author"))
+  .authorization((allow) => [allow.publicApiKey()])
+  .handler(
+    a.handler.custom({
+      dataSource: "AuthorTable",
+      entry: "./addAuthor.js",
+    })
+  );
+
 export const Test1CustomMutation = a
   .mutation()
   .returns(

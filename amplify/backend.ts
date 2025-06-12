@@ -1,6 +1,7 @@
 import { defineBackend } from "@aws-amplify/backend";
 import { Effect, Policy, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { Bucket } from "aws-cdk-lib/aws-s3";
+import { aws_dynamodb } from "aws-cdk-lib";
 import { auth } from "./auth/resource";
 import { data } from "./data/resource";
 import { getS3Function } from "./functions/get-s3/resource";
@@ -39,6 +40,14 @@ export const backend = defineBackend({
   AuthorTestMethodCustomMutationFunction,
   AuthorCustomMethodCustomQueryFunction,
 });
+
+const externalDataSourcesStack = backend.createStack("MyExternalDataSources");
+const externalTable = aws_dynamodb.Table.fromTableName(
+  externalDataSourcesStack,
+  "MyExternalAuthorTable",
+  "AuthorTable"
+);
+backend.data.addDynamoDbDataSource("AuthorTable", externalTable);
 
 const customBucketStack = backend.createStack("custom-bucket-stack");
 const targetLambdaArn =
