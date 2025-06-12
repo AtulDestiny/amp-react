@@ -46,11 +46,11 @@ const schema = a.schema({
   DeleteArticle,
   ListArticles,
   UpdateArticle,
-  GetAuthor,
-  AddAuthor,
-  DeleteAuthor,
-  ListAuthors,
-  UpdateAuthor,
+  // GetAuthor,
+  // AddAuthor,
+  // DeleteAuthor,
+  // ListAuthors,
+  // UpdateAuthor,
 });
 
 export type Schema = ClientSchema<typeof schema>;
