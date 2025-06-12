@@ -2,7 +2,7 @@ import { a } from "@aws-amplify/backend";
 
 export const Article = a.customType({
   id: a
-    .string()
+    .id()
     .required(),
     // .authorization((allow: any) => [
     //   allow.publicApiKey().to(["create", "read"]),
@@ -23,7 +23,7 @@ export const Article = a.customType({
     //   allow.authenticated().to(["read"]),
     // ]),
   createdAt: a
-    .string(),
+    .datetime(),
     // .authorization((allow: any) => [
     //   allow.publicApiKey().to(["create", "read"]),
     //   allow.authenticated().to(["read"]),

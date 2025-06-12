@@ -3,7 +3,7 @@ import { a } from "@aws-amplify/backend";
 export const GetArticle = a
   .query()
   .arguments({
-    id: a.string().required(),
+    id: a.id().required(),
   })
   .returns(a.ref("Article"))
   .authorization((allow) => [allow.publicApiKey()])
@@ -28,7 +28,7 @@ export const ListArticles = a
 export const AddArticle = a
   .mutation()
   .arguments({
-    id: a.string(),
+    id: a.id(),
     title: a.string().required(),
     content: a.string().required(),
     createdAt: a.string().required(),
@@ -46,7 +46,7 @@ export const AddArticle = a
 export const UpdateArticle = a
   .mutation()
   .arguments({
-    id: a.string().required(),
+    id: a.id().required(),
     title: a.string(),
     content: a.string(),
     createdAt: a.string(),
@@ -64,7 +64,7 @@ export const UpdateArticle = a
 export const DeleteArticle = a
   .mutation()
   .arguments({
-    id: a.string().required(),
+    id: a.id().required(),
   })
   .returns(a.ref("Article"))
   .authorization((allow) => [allow.publicApiKey()])
