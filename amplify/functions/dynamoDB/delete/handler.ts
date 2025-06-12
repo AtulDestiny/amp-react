@@ -1,18 +1,25 @@
-import { DynamoDB } from "aws-sdk";
+import { Context, util } from "@aws-appsync/utils";
+import * as ddb from "@aws-appsync/utils/dynamodb";
 
-const docClient = new DynamoDB.DocumentClient();
-const TABLE_NAME = process.env.TABLE_NAME!;
+export function request(ctx: Context) {
+  let condition: {} | undefined = undefined;
+  if (ctx.args.expectedVersion) {
+    condition = {
+      or: [
+        { id: { attributeExists: false } },
+        { version: { eq: ctx.args.expectedVersion } },
+      ],
+    };
+  }
+  return ddb.remove({ key: { id: ctx.args.id }, condition });
+}
 
-export const handler = async (event: any) => {
-  const id = event.arguments.id;
-
-  const result = await docClient
-    .delete({
-      TableName: TABLE_NAME,
-      Key: { id },
-      ReturnValues: "ALL_OLD"
-    })
-    .promise();
-
-  return result.Attributes;
-};
+export function response(ctx: Context) {
+  const { error, result } = ctx;
+  if (error) {
+    if (!ctx.stash.errors) ctx.stash.errors = [];
+    ctx.stash.errors.push(error);
+    return util.appendError(error.message, error.type, result);
+  }
+  return result;
+}

@@ -13,6 +13,20 @@ import {
   ListItems,
   UpdateItem,
 } from "../customResolvers/dynamoDB";
+import {
+  GetArticle,
+  AddArticle,
+  DeleteArticle,
+  ListArticles,
+  UpdateArticle,
+} from "../customResolvers/article";
+import {
+  GetAuthor,
+  AddAuthor,
+  DeleteAuthor,
+  ListAuthors,
+  UpdateAuthor,
+} from "../customResolvers/author";
 
 const schema = a.schema({
   TestCustomEntity,
@@ -27,6 +41,16 @@ const schema = a.schema({
   DeleteItem,
   ListItems,
   UpdateItem,
+  GetArticle,
+  AddArticle,
+  DeleteArticle,
+  ListArticles,
+  UpdateArticle,
+  GetAuthor,
+  AddAuthor,
+  DeleteAuthor,
+  ListAuthors,
+  UpdateAuthor,
 });
 
 export type Schema = ClientSchema<typeof schema>;

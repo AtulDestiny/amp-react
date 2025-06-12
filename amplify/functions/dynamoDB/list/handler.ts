@@ -1,14 +1,21 @@
-import { DynamoDB } from "aws-sdk";
+import { Context, util } from "@aws-appsync/utils";
+import * as ddb from "@aws-appsync/utils/dynamodb";
 
-const docClient = new DynamoDB.DocumentClient();
-const TABLE_NAME = process.env.TABLE_NAME!;
+export function request() {
+  return ddb.scan({});
+}
 
-export const handler = async () => {
-  const result = await docClient
-    .scan({
-      TableName: TABLE_NAME,
-    })
-    .promise();
+export function response(ctx: Context) {
+  const { error, result } = ctx;
 
-  return result.Items;
-};
+  if (error) {
+    if (!ctx.stash.errors) ctx.stash.errors = [];
+    ctx.stash.errors.push(error);
+    return util.appendError(error.message, error.type, result);
+  }
+  return {
+    items: result.items,
+    nextToken: result.nextToken,
+    scannedCount: result.scannedCount,
+  };
+}

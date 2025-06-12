@@ -1,17 +1,18 @@
-import { DynamoDB } from "aws-sdk";
+import { Context, util } from "@aws-appsync/utils";
+import * as ddb from "@aws-appsync/utils/dynamodb";
 
-const docClient = new DynamoDB.DocumentClient();
-const TABLE_NAME = process.env.TABLE_NAME!;
+export function request(ctx: Context) {
+  const item = { ...ctx.arguments };
+  const key = { id: ctx.args.id ?? util.autoId() };
+  return ddb.put({ key, item });
+}
 
-export const handler = async (event: any) => {
-  const item = { ...event.arguments.input };
-
-  await docClient
-    .put({
-      TableName: TABLE_NAME,
-      Item: item,
-    })
-    .promise();
-
-  return item;
-};
+export function response(ctx: Context) {
+  const { error, result } = ctx;
+  if (error) {
+    if (!ctx.stash.errors) ctx.stash.errors = [];
+    ctx.stash.errors.push(error);
+    return util.appendError(error.message, error.type, result);
+  }
+  return result;
+}

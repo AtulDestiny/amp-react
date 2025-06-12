@@ -1,7 +1,7 @@
 import { a } from "@aws-amplify/backend";
 
 export const TestCustomEntity = a
-  .model({
+  .customType({
     id: a
       .string()
       .default("N/A")
@@ -16,8 +16,4 @@ export const TestCustomEntity = a
         allow.publicApiKey().to(["read"]),
         allow.authenticated().to(["read"]),
       ]),
-  })
-  .authorization((allow: any) => [
-    allow.publicApiKey().to(["read"]),
-    allow.authenticated().to(["read"]),
-  ]);
+  });

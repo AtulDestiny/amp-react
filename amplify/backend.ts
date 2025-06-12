@@ -1,6 +1,7 @@
 import { defineBackend } from "@aws-amplify/backend";
 import { Effect, Policy, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { Bucket } from "aws-cdk-lib/aws-s3";
+import { aws_dynamodb as ddb } from "aws-cdk-lib";
 import { auth } from "./auth/resource";
 import { data } from "./data/resource";
 import { getS3Function } from "./functions/get-s3/resource";
@@ -184,3 +185,11 @@ if (backend.listFunction.resources.lambda.role) {
     })
   )
 }
+
+const customTableStack = backend.createStack("ExternalTables");
+
+const AuthorTable = ddb.Table.fromTableName(customTableStack, "AuthorTable", "AuthorTable");
+const ArticleTable = ddb.Table.fromTableName(customTableStack, "ArticleTable", "ArticleTable");
+
+backend.data.addDynamoDbDataSource("AuthorTableDataSource", AuthorTable);
+backend.data.addDynamoDbDataSource("ArticleTableDataSource", ArticleTable);

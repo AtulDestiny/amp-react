@@ -1,17 +1,16 @@
-import { DynamoDB } from "aws-sdk";
+import { Context, util } from "@aws-appsync/utils";
+import * as ddb from "@aws-appsync/utils/dynamodb";
 
-const docClient = new DynamoDB.DocumentClient();
-const TABLE_NAME = process.env.TABLE_NAME!;
+export function request(ctx: Context) {
+  return ddb.get({ key: { id: ctx.args.id } });
+}
 
-export const handler = async (event: any) => {
-  const id = event.arguments.id;
-
-  const result = await docClient
-    .get({
-      TableName: TABLE_NAME,
-      Key: { id },
-    })
-    .promise();
-
-  return result.Item;
+export const response = (ctx: Context) => {
+  const { error, result } = ctx;
+  if (error) {
+    if (!ctx.stash.errors) ctx.stash.errors = [];
+    ctx.stash.errors.push(error);
+    return util.appendError(error.message, error.type, result);
+  }
+  return ctx.result;
 };

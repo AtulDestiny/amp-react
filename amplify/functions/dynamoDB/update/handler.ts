@@ -1,38 +1,26 @@
-import { DynamoDB } from "aws-sdk";
+import { Context, util } from "@aws-appsync/utils";
+import * as ddb from "@aws-appsync/utils/dynamodb";
 
-const docClient = new DynamoDB.DocumentClient();
-const TABLE_NAME = process.env.TABLE_NAME!;
+export function request(ctx: Context) {
+  const { id, expectedVersion, ...rest } = ctx.args;
+  const values = Object.entries(rest).reduce((obj, [key, value]) => {
+    obj[key] = value ?? ddb.operations.remove();
+    return obj;
+  }, {} as Record<string, unknown>);
 
-export const handler = async (event: any) => {
-  const { id, ...updates } = event.arguments.input;
-
-  if (!id || Object.keys(updates).length === 0) {
-    throw new Error("Missing 'id' or fields to update");
-  }
-
-  const expressionAttributeNames: Record<string, string> = {};
-  const expressionAttributeValues: Record<string, any> = {};
-  const updateExpressions: string[] = [];
-
-  Object.entries(updates).forEach(([key, value], index) => {
-    const attributeKey = `#key${index}`;
-    const valueKey = `:value${index}`;
-    expressionAttributeNames[attributeKey] = key;
-    expressionAttributeValues[valueKey] = value;
-    updateExpressions.push(`${attributeKey} = ${valueKey}`);
+  return ddb.update({
+    key: { id },
+    condition: { version: { eq: expectedVersion } },
+    update: { ...values, version: ddb.operations.increment(1) },
   });
+}
 
-  const updateExpression = `set ${updateExpressions.join(", ")}`;
-
-  const params: DynamoDB.DocumentClient.UpdateItemInput = {
-    TableName: TABLE_NAME,
-    Key: { id },
-    UpdateExpression: updateExpression,
-    ExpressionAttributeNames: expressionAttributeNames,
-    ExpressionAttributeValues: expressionAttributeValues,
-    ReturnValues: "ALL_NEW"
-  };
-
-  const result = await docClient.update(params).promise();
-  return result.Attributes;
-};
+export function response(ctx: Context) {
+  const { error, result } = ctx;
+  if (error) {
+    if (!ctx.stash.errors) ctx.stash.errors = [];
+    ctx.stash.errors.push(error);
+    return util.appendError(error.message, error.type, result);
+  }
+  return result;
+}
