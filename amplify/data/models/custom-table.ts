@@ -1,25 +1,6 @@
-import {
-  a,
-} from '@aws-amplify/backend';
+import { a } from "@aws-amplify/backend";
 
-export const CustomTable = a.model({
-  id: a
-    .string()
-            .default("N/A")
-            .authorization((allow: any) => [
-      allow.publicApiKey().to(['read']),
-      allow.authenticated().to(['read']),
-    ]),
-  name: a
-    .string()
-            .default("N/A")
-            .authorization((allow: any) => [
-      allow.publicApiKey().to(['read']),
-      allow.authenticated().to(['read']),
-    ]),
-  
-})
-.authorization((allow: any) => [
-  allow.publicApiKey().to(['read']),
-  allow.authenticated().to(['read']),
-]);
+export const CustomTable = a.customType({
+  id: a.string(),
+  name: a.string(),
+});
