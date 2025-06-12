@@ -12,13 +12,23 @@ export const GetItem = a
   })
   .returns(a.json())
   .authorization((allow) => [allow.publicApiKey()])
-  .handler(a.handler.function(getFunction));
+  .handler(
+    a.handler.custom({
+      dataSource: "ArticleTableDataSource",
+      entry: "../functions/dynamoDB/get/handler.ts",
+    })
+  );
 
 export const ListItems = a
   .query()
   .returns(a.json())
   .authorization((allow) => [allow.publicApiKey()])
-  .handler(a.handler.function(listFunction));
+  .handler(
+    a.handler.custom({
+      dataSource: "ArticleTableDataSource",
+      entry: "../functions/dynamoDB/list/handler.ts",
+    })
+  );
 
 export const AddItem = a
   .mutation()
@@ -27,7 +37,12 @@ export const AddItem = a
   })
   .returns(a.json())
   .authorization((allow) => [allow.publicApiKey()])
-  .handler(a.handler.function(addFunction));
+  .handler(
+    a.handler.custom({
+      dataSource: "ArticleTableDataSource",
+      entry: "../functions/dynamoDB/add/handler.ts",
+    })
+  );
 
 export const UpdateItem = a
   .mutation()
@@ -36,7 +51,12 @@ export const UpdateItem = a
   })
   .returns(a.json())
   .authorization((allow) => [allow.publicApiKey()])
-  .handler(a.handler.function(updateFunction));
+  .handler(
+    a.handler.custom({
+      dataSource: "ArticleTableDataSource",
+      entry: "../functions/dynamoDB/update/handler.ts",
+    })
+  );
 
 export const DeleteItem = a
   .mutation()
@@ -45,4 +65,9 @@ export const DeleteItem = a
   })
   .returns(a.json())
   .authorization((allow) => [allow.publicApiKey()])
-  .handler(a.handler.function(deleteFunction));
+  .handler(
+    a.handler.custom({
+      dataSource: "ArticleTableDataSource",
+      entry: "../functions/dynamoDB/delete/handler.ts",
+    })
+  );
