@@ -1,9 +1,4 @@
 import { a } from "@aws-amplify/backend";
-import { addFunction } from "../functions/dynamoDB/add/resource";
-import { getFunction } from "../functions/dynamoDB/get/resource";
-import { updateFunction } from "../functions/dynamoDB/update/resource";
-import { deleteFunction } from "../functions/dynamoDB/delete/resource";
-import { listFunction } from "../functions/dynamoDB/list/resource";
 
 export const GetItem = a
   .query()
@@ -15,7 +10,7 @@ export const GetItem = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "functions/dynamoDB/get/handler.ts",
+      entry: "../functions/dynamoDB/get/handler.ts",
     })
   );
 
@@ -26,7 +21,7 @@ export const ListItems = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "functions/dynamoDB/list/handler.ts",
+      entry: "../functions/dynamoDB/list/handler.ts",
     })
   );
 
@@ -40,7 +35,7 @@ export const AddItem = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "functions/dynamoDB/add/handler.ts",
+      entry: "../functions/dynamoDB/add/handler.ts",
     })
   );
 
@@ -54,7 +49,7 @@ export const UpdateItem = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "functions/dynamoDB/update/handler.ts",
+      entry: "../functions/dynamoDB/update/handler.ts",
     })
   );
 
@@ -68,6 +63,6 @@ export const DeleteItem = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "functions/dynamoDB/delete/handler.ts",
+      entry: "../functions/dynamoDB/delete/handler.ts",
     })
   );
