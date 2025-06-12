@@ -36,11 +36,73 @@ const schema = a.schema({
   UploadFileS3,
   ExecuteFlow,
   ListFilesS3,
-  GetItem,
-  AddItem,
-  DeleteItem,
-  ListItems,
-  UpdateItem,
+  addItem: a
+    .mutation()
+    .arguments({
+      input: a.json().required(),
+    })
+    .returns(a.json())
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(
+      a.handler.custom({
+        dataSource: "ArticleTableDataSource",
+        entry: "./addItem.ts",
+      })
+    ),
+  getItem: a
+    .query()
+    .arguments({
+      id: a.string().required(),
+    })
+    .returns(a.json())
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(
+      a.handler.custom({
+        dataSource: "ArticleTableDataSource",
+        entry: "./getItem.ts",
+      })
+    ),
+  updateItem: a
+    .mutation()
+    .arguments({
+      input: a.json().required(),
+    })
+    .returns(a.json())
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(
+      a.handler.custom({
+        dataSource: "ArticleTableDataSource",
+        entry: "./updateItem.ts",
+      })
+    ),
+  deleteItem: a
+    .mutation()
+    .arguments({
+      id: a.string().required(),
+    })
+    .returns(a.json())
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(
+      a.handler.custom({
+        dataSource: "ArticleTableDataSource",
+        entry: "./deleteItem.ts",
+      })
+    ),
+  listItems: a
+    .query()
+    .returns(a.json())
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(
+      a.handler.custom({
+        dataSource: "ArticleTableDataSource",
+        entry: "./listItems.ts",
+      })
+    ),
+  // GetItem,
+  // AddItem,
+  // DeleteItem,
+  // ListItems,
+  // UpdateItem,
   // GetArticle,
   // AddArticle,
   // DeleteArticle,
