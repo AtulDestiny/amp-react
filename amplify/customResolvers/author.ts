@@ -1,11 +1,12 @@
 import { a } from "@aws-amplify/backend";
+import { Author } from "../data/models/author";
 
 export const GetAuthor = a
   .query()
   .arguments({
     authorId: a.string().required(),
   })
-  .returns(a.ref("Author"))
+  .returns(Author)
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -16,7 +17,7 @@ export const GetAuthor = a
 
 export const ListAuthors = a
   .query()
-  .returns(a.ref("Author").array())
+  .returns(Author)
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -32,7 +33,7 @@ export const AddAuthor = a
     name: a.string().required(),
     email: a.string().required(),
   })
-  .returns(a.ref("Author"))
+  .returns(Author)
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -48,7 +49,7 @@ export const UpdateAuthor = a
     name: a.string(),
     email: a.string(),
   })
-  .returns(a.ref("Author"))
+  .returns(Author)
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -62,7 +63,7 @@ export const DeleteAuthor = a
   .arguments({
     authorId: a.string().required(),
   })
-  .returns(a.ref("Author"))
+  .returns(Author)
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({

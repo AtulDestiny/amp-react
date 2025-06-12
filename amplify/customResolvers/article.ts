@@ -1,11 +1,12 @@
 import { a } from "@aws-amplify/backend";
+import { Article } from "../data/models/article";
 
 export const GetArticle = a
   .query()
   .arguments({
     id: a.id().required(),
   })
-  .returns(a.ref("Article"))
+  .returns(Article)
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -16,7 +17,7 @@ export const GetArticle = a
 
 export const ListArticles = a
   .query()
-  .returns(a.ref("Article").array())
+  .returns(Article)
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -34,7 +35,7 @@ export const AddArticle = a
     createdAt: a.string().required(),
     authorId: a.string().required(),
   })
-  .returns(a.ref("Article"))
+  .returns(Article)
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -52,7 +53,7 @@ export const UpdateArticle = a
     createdAt: a.string(),
     authorId: a.string(),
   })
-  .returns(a.ref("Article"))
+  .returns(Article)
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -66,7 +67,7 @@ export const DeleteArticle = a
   .arguments({
     id: a.id().required(),
   })
-  .returns(a.ref("Article"))
+  .returns(Article)
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
