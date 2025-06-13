@@ -1,6 +1,6 @@
 import { a } from "@aws-amplify/backend";
 
-export const Article = a.customType({
+export const Article = a.model({
   id: a
     .id()
     .required(),

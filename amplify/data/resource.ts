@@ -30,7 +30,7 @@ import {
 
 const schema = a.schema({
   // TestCustomEntity,
-  // Article,
+  Article,
   Author: a.customType({
     id: a.id().required(),
     name: a.string().required(),
