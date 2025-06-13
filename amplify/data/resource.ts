@@ -34,6 +34,8 @@ const schema = a.schema({
   Author: a.customType({
     id: a.id().required(),
     name: a.string().required(),
+    createdAt: a.string(),
+    updatedAt: a.string(),
   }),
   GetFileS3,
   UploadFileS3,
