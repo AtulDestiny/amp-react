@@ -38,7 +38,7 @@ const schema = a.schema({
     .handler(
       a.handler.custom({
         dataSource: "ExternalPostTableDataSource",
-        entry: "./addItem.ts",
+        entry: "./addItem.js",
       })
     ),
   // addItem: a
