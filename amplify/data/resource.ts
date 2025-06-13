@@ -30,8 +30,8 @@ import {
 
 const schema = a.schema({
   TestCustomEntity,
-  Article: Article,
-  Author: Author,
+  Article,
+  Author,
   GetFileS3,
   UploadFileS3,
   ExecuteFlow,
@@ -45,7 +45,7 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
-        dataSource: "ArticleTableDataSource",
+        dataSource: "AuthorTableDataSource",
         entry: "./addItem.ts",
       })
     ),
@@ -58,7 +58,7 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
-        dataSource: "ArticleTableDataSource",
+        dataSource: "AuthorTableDataSource",
         entry: "./getItem.ts",
       })
     ),
@@ -71,7 +71,7 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
-        dataSource: "ArticleTableDataSource",
+        dataSource: "AuthorTableDataSource",
         entry: "./updateItem.ts",
       })
     ),
@@ -84,7 +84,7 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
-        dataSource: "ArticleTableDataSource",
+        dataSource: "AuthorTableDataSource",
         entry: "./deleteItem.ts",
       })
     ),
@@ -94,7 +94,7 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
-        dataSource: "ArticleTableDataSource",
+        dataSource: "AuthorTableDataSource",
         entry: "./listItems.ts",
       })
     ),
