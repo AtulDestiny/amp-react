@@ -30,10 +30,12 @@ import {
 
 const schema = a.schema({
   // TestCustomEntity,
-  // Article,
+  Article,
   Author: a.customType({
     id: a.id().required(),
     name: a.string().required(),
+    createdAt: a.string(),
+    updatedAt: a.string(),
   }),
   GetFileS3,
   UploadFileS3,
