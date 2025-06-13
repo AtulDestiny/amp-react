@@ -125,8 +125,8 @@ if (backend.executeFlowFunction.resources.lambda.role) {
   );
 }
 
-const customTableStack = backend.createStack("MyExternalDataSources");
+const externalDataSourcesStack = backend.createStack("MyExternalDataSources");
 
-const AuthorTable = ddb.Table.fromTableName(customTableStack, "MyExternalPostTable", "PostTable");
+const externalTable = ddb.Table.fromTableName(externalDataSourcesStack, "MyExternalPostTable", "PostTable");
 
-backend.data.addDynamoDbDataSource("ExternalPostTableDataSource", AuthorTable);
+backend.data.addDynamoDbDataSource("ExternalPostTableDataSource", externalTable);
