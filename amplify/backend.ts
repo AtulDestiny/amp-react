@@ -125,10 +125,8 @@ if (backend.executeFlowFunction.resources.lambda.role) {
   );
 }
 
-const customTableStack = backend.createStack("ExternalTables");
+const customTableStack = backend.createStack("MyExternalDataSources");
 
-const AuthorTable = ddb.Table.fromTableName(customTableStack, "ExternalAuthorTable", "AuthorTableData");
-// const ArticleTable = ddb.Table.fromTableName(customTableStack, "ArticleTable", "Article-5p3j4x7cxbejlib64lfezxryiu-NONE");
+const AuthorTable = ddb.Table.fromTableName(customTableStack, "MyExternalPostTable", "PostTable");
 
-backend.data.addDynamoDbDataSource("ExternalAuthorTableDataSource", AuthorTable);
-// backend.data.addDynamoDbDataSource("ArticleTableDataSource", ArticleTable);
+backend.data.addDynamoDbDataSource("ExternalPostTableDataSource", AuthorTable);
