@@ -5,5 +5,5 @@ export function request() {
 }
 
 export function response(ctx) {
-  return ctx.result;
+  return ctx.result.items ?? [];
 }
