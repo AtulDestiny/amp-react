@@ -31,7 +31,7 @@ const Loader = dynamic(() => import('../components/Loader'), {
 export default function Content() {
   const [items, setItems] = useState<(Article | Author | Todo)[]>([]);
   const [authors, setAuthors] = useState<Author[]>([]);
-  const [formState, setFormState] = useState<Omit<Article | Author | Todo, "id">>({
+  const [formState, setFormState] = useState<Omit<any, "id">>({
     authorId: "",
     title: "",
     content: "",
@@ -57,7 +57,7 @@ export default function Content() {
   const fetchItems = async () => {
     try {
       setLoading(true);
-      let response;
+      let response : any;
       
       switch (activeMenu) {
         case 'todo':
@@ -87,7 +87,7 @@ export default function Content() {
       }
 
       // Always fetch authors for the todo form
-      const authorsResponse = await client.graphql({
+      const authorsResponse : any = await client.graphql({
         query: listAuthors
       });
       if (authorsResponse.data) {
@@ -122,7 +122,7 @@ export default function Content() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      let response;
+      let response : any;
       
       switch (activeMenu) {
         case 'todo':
@@ -204,14 +204,36 @@ export default function Content() {
     }
   };
 
-  const handleEdit = (item: Article | Author | Todo) => {
+  const handleEdit = (item: any) => {
     setEditingId(item.id);
-    setFormState({
-      authorId: item.authorId || "",
-      title: activeMenu === 'author' ? item.name : (item.title || ""),
-      content: item.content || "",
-      type: activeMenu,
-    });
+    
+    // Set form state based on the active menu
+    switch (activeMenu) {
+      case 'author':
+        setFormState({
+          authorId: "",
+          title: item.name || "", // For authors, use name as title
+          content: "",
+          type: activeMenu,
+        });
+        break;
+      case 'article':
+        setFormState({
+          authorId: item.authorId || "",
+          title: item.title || "",
+          content: item.content || "",
+          type: activeMenu,
+        });
+        break;
+      case 'todo':
+        setFormState({
+          authorId: item.authorId || "",
+          title: "",
+          content: item.content || "",
+          type: activeMenu,
+        });
+        break;
+    }
   };
 
   const handleDeleteClick = (item: Article | Author | Todo) => {
@@ -342,7 +364,7 @@ export default function Content() {
             >
               {activeMenu === 'todo' && (
                 <TodoForm
-                  formState={formState}
+                  formState={formState as Todo}
                   handleChange={handleChange}
                   submitting={submitting}
                   editingId={editingId}
@@ -394,7 +416,7 @@ export default function Content() {
 
               {activeMenu === 'author' && (
                 <AuthorForm
-                  formState={formState}
+                  formState={formState as Author}
                   handleChange={handleChange}
                   submitting={submitting}
                   editingId={editingId}
@@ -507,7 +529,7 @@ export default function Content() {
                         <tr key={item.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm font-medium text-gray-900">
-                              {'content' in item ? item.content : 'title' in item ? item.title : ''}
+                              {'content' in item ? item.content : 'title' in item ? item.title as string : ''}
                             </div>
                           </td>
                           {activeMenu === 'todo' && (
@@ -551,7 +573,7 @@ export default function Content() {
                       <div className="flex justify-between">
                         <div>
                           <h3 className="text-lg font-bold text-gray-900">
-                            {'content' in item ? item.content : 'title' in item ? item.title : ''}
+                            {'content' in item ? item.content : 'title' in item ? item.title as string: ''}
                           </h3>
                           {activeMenu === 'todo' && (
                             <p className="text-sm text-gray-600 mt-1">Author: {'authorId' in item ? item.authorId : ''}</p>

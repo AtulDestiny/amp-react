@@ -2,7 +2,7 @@ import React from 'react';
 
 interface AuthorFormProps {
   formState: {
-    title: string;
+    name: string;
   };
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   submitting: boolean;
@@ -17,7 +17,7 @@ export default function AuthorForm({ formState, handleChange, submitting, editin
         <input
           type="text"
           name="title"
-          value={formState.title}
+          value={formState.name}
           onChange={handleChange}
           required
           className="mt-1 block w-full border border-gray-300 rounded-md p-2"
