@@ -1,42 +1,14 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
-import { TestCustomEntity } from "./models/test-custom-entity";
 import { Article } from "./models/article";
 import { Author } from "./models/author";
 import { GetFileS3 } from "../customResolvers/getFileS3";
 import { UploadFileS3 } from "../customResolvers/uploadFileS3";
 import { ExecuteFlow } from "../customResolvers/executeFlow";
 import { ListFilesS3 } from "../customResolvers/listFilesS3";
-import {
-  GetItem,
-  AddItem,
-  DeleteItem,
-  ListItems,
-  UpdateItem,
-} from "../customResolvers/dynamoDB";
-import {
-  GetArticle,
-  AddArticle,
-  DeleteArticle,
-  ListArticles,
-  UpdateArticle,
-} from "../customResolvers/article";
-import {
-  GetAuthor,
-  AddAuthor,
-  DeleteAuthor,
-  ListAuthors,
-  UpdateAuthor,
-} from "../customResolvers/author";
 
 const schema = a.schema({
-  // TestCustomEntity,
   Article,
-  Author: a.customType({
-    id: a.id().required(),
-    name: a.string().required(),
-    createdAt: a.string(),
-    updatedAt: a.string(),
-  }),
+  Author,
   GetFileS3,
   UploadFileS3,
   ExecuteFlow,
