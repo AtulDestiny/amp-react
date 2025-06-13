@@ -53,56 +53,56 @@ const schema = a.schema({
         entry: "./addItem.ts",
       })
     ),
-  getItem: a
-    .query()
-    .arguments({
-      id: a.id().required(),
-    })
-    .returns(a.ref("Author"))
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "AuthorTableDataSource",
-        entry: "./getItem.ts",
-      })
-    ),
-  updateItem: a
-    .mutation()
-    .arguments({
-      id: a.id().required(),
-      name: a.string().required(),
-    })
-    .returns(a.ref("Author"))
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "AuthorTableDataSource",
-        entry: "./updateItem.ts",
-      })
-    ),
-  deleteItem: a
-    .mutation()
-    .arguments({
-      id: a.id().required(),
-    })
-    .returns(a.ref("Author"))
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "AuthorTableDataSource",
-        entry: "./deleteItem.ts",
-      })
-    ),
-  listItems: a
-    .query()
-    .returns(a.ref("Author").array())
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "AuthorTableDataSource",
-        entry: "./listItems.ts",
-      })
-    ),
+  // getItem: a
+  //   .query()
+  //   .arguments({
+  //     id: a.id().required(),
+  //   })
+  //   .returns(a.ref("Author"))
+  //   .authorization((allow) => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "AuthorTableDataSource",
+  //       entry: "./getItem.ts",
+  //     })
+  //   ),
+  // updateItem: a
+  //   .mutation()
+  //   .arguments({
+  //     id: a.id().required(),
+  //     name: a.string().required(),
+  //   })
+  //   .returns(a.ref("Author"))
+  //   .authorization((allow) => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "AuthorTableDataSource",
+  //       entry: "./updateItem.ts",
+  //     })
+  //   ),
+  // deleteItem: a
+  //   .mutation()
+  //   .arguments({
+  //     id: a.id().required(),
+  //   })
+  //   .returns(a.ref("Author"))
+  //   .authorization((allow) => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "AuthorTableDataSource",
+  //       entry: "./deleteItem.ts",
+  //     })
+  //   ),
+  // listItems: a
+  //   .query()
+  //   .returns(a.ref("Author").array())
+  //   .authorization((allow) => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "AuthorTableDataSource",
+  //       entry: "./listItems.ts",
+  //     })
+  //   ),
   // GetItem,
   // AddItem,
   // DeleteItem,
