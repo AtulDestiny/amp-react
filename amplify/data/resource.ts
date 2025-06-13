@@ -30,8 +30,6 @@ import {
 
 const schema = a.schema({
   TestCustomEntity,
-  Article: Article,
-  Author: Author,
   GetFileS3,
   UploadFileS3,
   ExecuteFlow,
