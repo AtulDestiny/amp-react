@@ -1,20 +1,41 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { client, listContent, addContent, updateContent, deleteContent, type ContentItem, type ListContentResponse, type AddContentResponse, type UpdateContentResponse, type DeleteContentResponse } from "../lib/graphql";
+import { 
+  client,
+  type Article,
+  type Author,
+  type Todo,
+  listArticles,
+  addArticle,
+  updateArticle,
+  deleteArticle,
+  listAuthors,
+  addAuthor,
+  updateAuthor,
+  deleteAuthor,
+  listTodos,
+  addTodo,
+  updateTodo,
+  deleteTodo
+} from "../lib/graphql";
 import { GraphQLResult } from "@aws-amplify/api";
 import dynamic from 'next/dynamic';
+import TodoForm from '../components/TodoForm';
+import AuthorForm from '../components/AuthorForm';
 
 const Loader = dynamic(() => import('../components/Loader'), {
   ssr: false
 });
 
 export default function Content() {
-  const [items, setItems] = useState<ContentItem[]>([]);
-  const [formState, setFormState] = useState<Omit<ContentItem, "id">>({
+  const [items, setItems] = useState<(Article | Author | Todo)[]>([]);
+  const [authors, setAuthors] = useState<Author[]>([]);
+  const [formState, setFormState] = useState<Omit<Article | Author | Todo, "id">>({
     authorId: "",
     title: "",
     content: "",
+    type: "todo",
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -22,6 +43,7 @@ export default function Content() {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'table'>('list');
+  const [activeMenu, setActiveMenu] = useState<'todo' | 'article' | 'author'>('todo');
   const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; id: string | null; title: string }>({
     show: false,
     id: null,
@@ -30,20 +52,49 @@ export default function Content() {
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [activeMenu]);
 
   const fetchItems = async () => {
     try {
       setLoading(true);
-      const response = await client.graphql({
-        query: listContent
-      }) as GraphQLResult<ListContentResponse>;
-
-      if (response.data) {
-        const jsonData = JSON.parse(response.data.ListItems);
-        setItems(Array.isArray(jsonData) ? jsonData : []);
-        setError(null);
+      let response;
+      
+      switch (activeMenu) {
+        case 'todo':
+          response = await client.graphql({
+            query: listTodos
+          });
+          if (response.data) {
+            setItems(response.data.ListTodos.items);
+          }
+          break;
+        case 'article':
+          response = await client.graphql({
+            query: listArticles
+          });
+          if (response.data) {
+            setItems(response.data.ListArticles.items);
+          }
+          break;
+        case 'author':
+          response = await client.graphql({
+            query: listAuthors
+          });
+          if (response.data) {
+            setItems(response.data.ListAuthors.items);
+          }
+          break;
       }
+
+      // Always fetch authors for the todo form
+      const authorsResponse = await client.graphql({
+        query: listAuthors
+      });
+      if (authorsResponse.data) {
+        setAuthors(authorsResponse.data.ListAuthors.items);
+      }
+      
+      setError(null);
     } catch (err) {
       setError("Failed to fetch content items");
       console.error(err);
@@ -53,57 +104,96 @@ export default function Content() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormState(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const inputData = editingId
-        ? { id: editingId, ...formState }
-        : { id: Date.now().toString(), ...formState };
-
-      if (editingId) {
-        // Update existing item
-        const response = await client.graphql({
-          query: updateContent,
-          variables: {
-            input: JSON.stringify(inputData)
+      let response;
+      
+      switch (activeMenu) {
+        case 'todo':
+          if (editingId) {
+            response = await client.graphql({
+              query: updateTodo,
+              variables: {
+                id: editingId,
+                content: formState.content,
+                authorId: formState.authorId
+              }
+            });
+          } else {
+            response = await client.graphql({
+              query: addTodo,
+              variables: {
+                content: formState.content,
+                authorId: formState.authorId
+              }
+            });
           }
-        }) as GraphQLResult<UpdateContentResponse>;
-
-        if (!response.data) {
-          throw new Error('Failed to update content');
-        }
-
-        const updatedItem = JSON.parse(response.data.UpdateItem);
-        if (!updatedItem) {
-          throw new Error('Invalid response from update operation');
-        }
-      } else {
-        // Add new item
-        const response = await client.graphql({
-          query: addContent,
-          variables: {
-            input: JSON.stringify(inputData)
+          break;
+        case 'article':
+          if (editingId) {
+            response = await client.graphql({
+              query: updateArticle,
+              variables: {
+                id: editingId,
+                title: formState.title,
+                content: formState.content,
+                authorId: formState.authorId
+              }
+            });
+          } else {
+            response = await client.graphql({
+              query: addArticle,
+              variables: {
+                title: formState.title,
+                content: formState.content,
+                authorId: formState.authorId
+              }
+            });
           }
-        }) as GraphQLResult<AddContentResponse>;
-
-        if (!response.data) {
-          throw new Error('Failed to add content');
-        }
-
-        const newItem = JSON.parse(response.data.AddItem);
-        if (!newItem) {
-          throw new Error('Invalid response from add operation');
-        }
+          break;
+        case 'author':
+          if (editingId) {
+            response = await client.graphql({
+              query: updateAuthor,
+              variables: {
+                id: editingId,
+                name: formState.title
+              }
+            });
+          } else {
+            response = await client.graphql({
+              query: addAuthor,
+              variables: {
+                name: formState.title
+              }
+            });
+          }
+          break;
       }
+
       // Reset form and refresh items
-      setFormState({ authorId: "", title: "", content: "" });
+      setFormState({ 
+        authorId: "", 
+        title: "", 
+        content: "",
+        type: activeMenu,
+      });
       setEditingId(null);
       await fetchItems();
     } catch (err) {
@@ -114,20 +204,21 @@ export default function Content() {
     }
   };
 
-  const handleEdit = (item: ContentItem) => {
-    setFormState({
-      authorId: item.authorId,
-      title: item.title,
-      content: item.content,
-    });
+  const handleEdit = (item: Article | Author | Todo) => {
     setEditingId(item.id);
+    setFormState({
+      authorId: item.authorId || "",
+      title: activeMenu === 'author' ? item.name : (item.title || ""),
+      content: item.content || "",
+      type: activeMenu,
+    });
   };
 
-  const handleDeleteClick = (item: ContentItem) => {
+  const handleDeleteClick = (item: Article | Author | Todo) => {
     setDeleteConfirm({
       show: true,
       id: item.id,
-      title: item.title
+      title: 'title' in item ? item.title : 'content' in item ? item.content : ""
     });
   };
 
@@ -136,18 +227,27 @@ export default function Content() {
     setDeleting(true);
 
     try {
-      const response = await client.graphql({
-        query: deleteContent,
-        variables: { id: deleteConfirm.id }
-      }) as GraphQLResult<DeleteContentResponse>;
-
-      if (!response.data) {
-        throw new Error('Failed to delete content');
-      }
-
-      const deletedItem = JSON.parse(response.data.DeleteItem);
-      if (!deletedItem) {
-        throw new Error('Invalid response from delete operation');
+      let response;
+      
+      switch (activeMenu) {
+        case 'todo':
+          response = await client.graphql({
+            query: deleteTodo,
+            variables: { id: deleteConfirm.id }
+          });
+          break;
+        case 'article':
+          response = await client.graphql({
+            query: deleteArticle,
+            variables: { id: deleteConfirm.id }
+          });
+          break;
+        case 'author':
+          response = await client.graphql({
+            query: deleteAuthor,
+            variables: { id: deleteConfirm.id }
+          });
+          break;
       }
 
       await fetchItems();
@@ -170,7 +270,7 @@ export default function Content() {
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">Content</h1>
+              <h1 className="text-3xl font-bold text-gray-800">Content Management</h1>
               <p className="text-gray-600 mt-1">Manage your content</p>
             </div>
             <Link
@@ -192,53 +292,115 @@ export default function Content() {
               Back to Home
             </Link>
           </div>
+
+          {/* Menu Navigation */}
+          <div className="mb-8">
+            <nav className="flex space-x-4 border-b border-gray-200">
+              <button
+                onClick={() => setActiveMenu('todo')}
+                className={`px-4 py-2 text-sm font-medium ${
+                  activeMenu === 'todo'
+                    ? 'border-b-2 border-blue-500 text-blue-600'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Todo
+              </button>
+              <button
+                onClick={() => setActiveMenu('article')}
+                className={`px-4 py-2 text-sm font-medium ${
+                  activeMenu === 'article'
+                    ? 'border-b-2 border-blue-500 text-blue-600'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Article
+              </button>
+              <button
+                onClick={() => setActiveMenu('author')}
+                className={`px-4 py-2 text-sm font-medium ${
+                  activeMenu === 'author'
+                    ? 'border-b-2 border-blue-500 text-blue-600'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Author
+              </button>
+            </nav>
+          </div>
+
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
               {error}
             </div>
           )}
+
           <div className="space-y-8">
             <form
               onSubmit={handleSubmit}
               className="bg-white rounded-lg p-6 shadow-md space-y-4"
             >
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Author ID
-                </label>
-                <input
-                  type="text"
-                  name="authorId"
-                  value={formState.authorId}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              {activeMenu === 'todo' && (
+                <TodoForm
+                  formState={formState}
+                  handleChange={handleChange}
+                  submitting={submitting}
+                  editingId={editingId}
+                  authors={authors}
                 />
-              </div>
-              <div>
-                <label className="block font-medium text-gray-700">Title</label>
-                <input
-                  type="text"
-                  name="title"
-                  value={formState.title}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              )}
+
+              {activeMenu === 'article' && (
+                <>
+                  <div>
+                    <label className="block font-medium text-gray-700">
+                      Author ID
+                    </label>
+                    <input
+                      type="text"
+                      name="authorId"
+                      value={formState.authorId}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-medium text-gray-700">Title</label>
+                    <input
+                      type="text"
+                      name="title"
+                      value={formState.title}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-medium text-gray-700">
+                      Content
+                    </label>
+                    <textarea
+                      name="content"
+                      value={formState.content}
+                      onChange={handleChange}
+                      required
+                      rows={4}
+                      className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                    />
+                  </div>
+                </>
+              )}
+
+              {activeMenu === 'author' && (
+                <AuthorForm
+                  formState={formState}
+                  handleChange={handleChange}
+                  submitting={submitting}
+                  editingId={editingId}
                 />
-              </div>
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Content
-                </label>
-                <textarea
-                  name="content"
-                  value={formState.content}
-                  onChange={handleChange}
-                  required
-                  rows={4}
-                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-                />
-              </div>
+              )}
+
               <div className="flex space-x-4">
                 <button
                   type="submit"
@@ -254,14 +416,19 @@ export default function Content() {
                       {editingId ? "Updating..." : "Creating..."}
                     </>
                   ) : (
-                    editingId ? "Update Content" : "Create Content"
+                    editingId ? "Update" : "Create"
                   )}
                 </button>
                 {editingId && (
                   <button
                     type="button"
                     onClick={() => {
-                      setFormState({ authorId: "", title: "", content: "" });
+                      setFormState({ 
+                        authorId: "", 
+                        title: "", 
+                        content: "",
+                        type: activeMenu,
+                      });
                       setEditingId(null);
                     }}
                     className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -271,6 +438,7 @@ export default function Content() {
                 )}
               </div>
             </form>
+
             <div className="mt-8">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Existing Content</h2>
@@ -303,6 +471,7 @@ export default function Content() {
                   </button>
                 </div>
               </div>
+
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-12">
                   <Loader />
@@ -320,9 +489,16 @@ export default function Content() {
                   <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content</th>
+                        {activeMenu === 'todo' && (
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
+                        )}
+                        {activeMenu === 'article' && (
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
+                        )}
+                        {activeMenu === 'author' && (
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author ID</th>
+                        )}
                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                       </tr>
                     </thead>
@@ -330,14 +506,25 @@ export default function Content() {
                       {items.map((item) => (
                         <tr key={item.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">{item.title}</div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {'content' in item ? item.content : 'title' in item ? item.title : ''}
+                            </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-600">{item.authorId}</div>
-                          </td>
-                          <td className="px-6 py-4">
-                            <div className="text-sm text-gray-600 max-w-md truncate">{item.content}</div>
-                          </td>
+                          {activeMenu === 'todo' && (
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-600">{'authorId' in item ? item.authorId : ''}</div>
+                            </td>
+                          )}
+                          {activeMenu === 'article' && (
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-600">{'authorId' in item ? item.authorId : ''}</div>
+                            </td>
+                          )}
+                          {activeMenu === 'author' && (
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-600">{'name' in item ? item.name : ''}</div>
+                            </td>
+                          )}
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <button
                               onClick={() => handleEdit(item)}
@@ -363,9 +550,18 @@ export default function Content() {
                     <li key={item.id} className="p-4 bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
                       <div className="flex justify-between">
                         <div>
-                          <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
-                          <p className="text-sm text-gray-600 mt-1">Author: {item.authorId}</p>
-                          <p className="mt-2 text-gray-700">{item.content}</p>
+                          <h3 className="text-lg font-bold text-gray-900">
+                            {'content' in item ? item.content : 'title' in item ? item.title : ''}
+                          </h3>
+                          {activeMenu === 'todo' && (
+                            <p className="text-sm text-gray-600 mt-1">Author: {'authorId' in item ? item.authorId : ''}</p>
+                          )}
+                          {activeMenu === 'article' && (
+                            <p className="text-sm text-gray-600 mt-1">Author: {'authorId' in item ? item.authorId : ''}</p>
+                          )}
+                          {activeMenu === 'author' && (
+                            <p className="text-sm text-gray-600 mt-1">Name: {'name' in item ? item.name : ''}</p>
+                          )}
                         </div>
                         <div className="flex space-x-2">
                           <button
