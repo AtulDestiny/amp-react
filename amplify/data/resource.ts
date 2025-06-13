@@ -29,7 +29,12 @@ import {
 } from "../customResolvers/author";
 
 const schema = a.schema({
-  TestCustomEntity,
+  // TestCustomEntity,
+  // Article,
+  Author: a.customType({
+    id: a.id().required(),
+    name: a.string().required(),
+  }),
   GetFileS3,
   UploadFileS3,
   ExecuteFlow,
@@ -37,65 +42,67 @@ const schema = a.schema({
   addItem: a
     .mutation()
     .arguments({
-      input: a.json().required(),
+      id: a.id(),
+      name: a.string().required(),
     })
-    .returns(a.json())
+    .returns(a.ref("Author"))
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
-        dataSource: "ArticleTableDataSource",
+        dataSource: "AuthorTableDataSource",
         entry: "./addItem.ts",
       })
     ),
-  getItem: a
-    .query()
-    .arguments({
-      id: a.string().required(),
-    })
-    .returns(a.json())
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "ArticleTableDataSource",
-        entry: "./getItem.ts",
-      })
-    ),
-  updateItem: a
-    .mutation()
-    .arguments({
-      input: a.json().required(),
-    })
-    .returns(a.json())
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "ArticleTableDataSource",
-        entry: "./updateItem.ts",
-      })
-    ),
-  deleteItem: a
-    .mutation()
-    .arguments({
-      id: a.string().required(),
-    })
-    .returns(a.json())
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "ArticleTableDataSource",
-        entry: "./deleteItem.ts",
-      })
-    ),
-  listItems: a
-    .query()
-    .returns(a.json())
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "ArticleTableDataSource",
-        entry: "./listItems.ts",
-      })
-    ),
+  // getItem: a
+  //   .query()
+  //   .arguments({
+  //     id: a.id().required(),
+  //   })
+  //   .returns(a.ref("Author"))
+  //   .authorization((allow) => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "AuthorTableDataSource",
+  //       entry: "./getItem.ts",
+  //     })
+  //   ),
+  // updateItem: a
+  //   .mutation()
+  //   .arguments({
+  //     id: a.id().required(),
+  //     name: a.string().required(),
+  //   })
+  //   .returns(a.ref("Author"))
+  //   .authorization((allow) => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "AuthorTableDataSource",
+  //       entry: "./updateItem.ts",
+  //     })
+  //   ),
+  // deleteItem: a
+  //   .mutation()
+  //   .arguments({
+  //     id: a.id().required(),
+  //   })
+  //   .returns(a.ref("Author"))
+  //   .authorization((allow) => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "AuthorTableDataSource",
+  //       entry: "./deleteItem.ts",
+  //     })
+  //   ),
+  // listItems: a
+  //   .query()
+  //   .returns(a.ref("Author").array())
+  //   .authorization((allow) => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "AuthorTableDataSource",
+  //       entry: "./listItems.ts",
+  //     })
+  //   ),
   // GetItem,
   // AddItem,
   // DeleteItem,

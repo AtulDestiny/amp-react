@@ -127,8 +127,16 @@ if (backend.executeFlowFunction.resources.lambda.role) {
 
 const customTableStack = backend.createStack("ExternalTables");
 
-const AuthorTable = ddb.Table.fromTableName(customTableStack, "AuthorTable", "Author-5p3j4x7cxbejlib64lfezxryiu-NONE");
-const ArticleTable = ddb.Table.fromTableName(customTableStack, "ArticleTable", "Article-5p3j4x7cxbejlib64lfezxryiu-NONE");
+const AuthorTable = ddb.Table.fromTableName(customTableStack, "AuthorTable", "Author-cx5qlkh4ozhn3jynbxzpnayedm-NONE");
+// const ArticleTable = ddb.Table.fromTableName(customTableStack, "ArticleTable", "Article-5p3j4x7cxbejlib64lfezxryiu-NONE");
 
-backend.data.addDynamoDbDataSource("AuthorTableDataSource", AuthorTable);
-backend.data.addDynamoDbDataSource("ArticleTableDataSource", ArticleTable);
+const authorDataSource = backend.data.addDynamoDbDataSource("AuthorTableDataSource", AuthorTable);
+// backend.data.addDynamoDbDataSource("ArticleTableDataSource", ArticleTable);
+
+authorDataSource.grantPrincipal.addToPrincipalPolicy(
+  new PolicyStatement({
+    effect: Effect.ALLOW,
+    actions: ["dynamodb:*"],
+    resources: [AuthorTable.tableArn],
+  })
+);
