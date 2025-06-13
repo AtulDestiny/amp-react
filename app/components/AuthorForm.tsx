@@ -16,7 +16,7 @@ export default function AuthorForm({ formState, handleChange, submitting, editin
         <label className="block font-medium text-gray-700">Author Name</label>
         <input
           type="text"
-          name="title"
+          name="name"
           value={formState.name}
           onChange={handleChange}
           required

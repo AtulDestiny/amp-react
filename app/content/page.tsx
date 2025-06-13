@@ -36,6 +36,7 @@ export default function Content() {
     title: "",
     content: "",
     type: "todo",
+    name : "",
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
