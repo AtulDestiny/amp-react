@@ -450,6 +450,7 @@ export default function Content() {
                         authorId: "", 
                         title: "", 
                         content: "",
+                        name: "",
                         type: activeMenu,
                       });
                       setEditingId(null);
