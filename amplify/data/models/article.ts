@@ -6,3 +6,9 @@ export const Article = a.customType({
   content: a.string().required(),
   authorId: a.string().required(),
 });
+
+export const ListArticlesResult = a.customType({
+  items: a.ref("Article").array(),
+  nextToken: a.string() || null,
+  scannedCount: a.integer(),
+});
