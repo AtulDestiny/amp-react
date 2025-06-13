@@ -1,70 +1,72 @@
 import { a } from "@aws-amplify/backend";
 
-export const GetAuthor = a
+export const GetTodo = a
   .query()
   .arguments({
     id: a.id().required(),
   })
-  .returns(a.ref("Author"))
+  .returns(a.ref("Todo"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
-      dataSource: "AuthorTableDataSource",
+      dataSource: "TodoTableDataSource",
       entry: "../data/getItem.js",
     })
   );
 
-export const ListAuthors = a
+export const ListTodos = a
   .query()
-  .returns(a.ref("Author").array())
+  .returns(a.ref("Todo").array())
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
-      dataSource: "AuthorTableDataSource",
+      dataSource: "TodoTableDataSource",
       entry: "../data/getItem.js",
     })
   );
 
-export const AddAuthor = a
+export const AddTodo = a
   .mutation()
   .arguments({
     id: a.id(),
-    name: a.string().required(),
+    content: a.string().required(),
+    authorId: a.string().required(),
   })
-  .returns(a.ref("Author"))
+  .returns(a.ref("Todo"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
-      dataSource: "AuthorTableDataSource",
+      dataSource: "TodoTableDataSource",
       entry: "../data/getItem.js",
     })
   );
 
-export const UpdateAuthor = a
+export const UpdateTodo = a
   .mutation()
   .arguments({
     id: a.id().required(),
-    name: a.string(),
+    content: a.string().required(),
+    authorId: a.string().required(),
   })
-  .returns(a.ref("Author"))
+  .returns(a.ref("Todo"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
-      dataSource: "AuthorTableDataSource",
+      dataSource: "TodoTableDataSource",
       entry: "../data/getItem.js",
     })
   );
 
-export const DeleteAuthor = a
+export const DeleteTodo = a
   .mutation()
   .arguments({
     id: a.id().required(),
   })
-  .returns(a.ref("Author"))
+  .returns(a.ref("Todo"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
-      dataSource: "AuthorTableDataSource",
+      dataSource: "TodoTableDataSource",
       entry: "../data/getItem.js",
     })
   );

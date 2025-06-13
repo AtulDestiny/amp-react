@@ -1,4 +1,3 @@
-import { util } from "@aws-appsync/utils";
 import * as ddb from "@aws-appsync/utils/dynamodb";
 
 export function request(ctx) {

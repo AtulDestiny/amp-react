@@ -125,8 +125,11 @@ if (backend.executeFlowFunction.resources.lambda.role) {
   );
 }
 
-const externalDataSourcesStack = backend.createStack("MyExternalDataSources");
+const externalDataSourcesStack = backend.createStack("ExternalDataSources");
 
-const externalTable = ddb.Table.fromTableName(externalDataSourcesStack, "MyExternalPostTable", "PostTable");
-
-backend.data.addDynamoDbDataSource("ExternalPostTableDataSource", externalTable);
+const authorTable = ddb.Table.fromTableName(externalDataSourcesStack, "ExternalAuthorTable", "Author-cx5qlkh4ozhn3jynbxzpnayedm-NONE");
+const articleTable = ddb.Table.fromTableName(externalDataSourcesStack, "ExternalArticleTable", "Article-oxvvc4nborabjorfsd563pnqs4-NONE");
+const todoTable = ddb.Table.fromTableName(externalDataSourcesStack, "ExternalTodoTable", "Todo-cx5qlkh4ozhn3jynbxzpnayedm-NONE");
+backend.data.addDynamoDbDataSource("AuthorTableDataSource", authorTable);
+backend.data.addDynamoDbDataSource("ArticleTableDataSource", articleTable);
+backend.data.addDynamoDbDataSource("TodoTableDataSource", todoTable);

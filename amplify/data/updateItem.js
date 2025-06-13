@@ -10,7 +10,7 @@ export function request(ctx) {
 
   return ddb.update({
     key: { id },
-    update: { ...values, version: ddb.operations.increment(1) },
+    update: { ...values },
   });
 }
 

@@ -2,16 +2,7 @@ import { util } from "@aws-appsync/utils";
 import * as ddb from "@aws-appsync/utils/dynamodb";
 
 export function request(ctx) {
-  let condition = null;
-  if (ctx.args.expectedVersion) {
-    condition = {
-      or: [
-        { id: { attributeExists: false } },
-        { version: { eq: ctx.args.expectedVersion } },
-      ],
-    };
-  }
-  return ddb.remove({ key: { id: ctx.args.id }, condition });
+  return ddb.remove({ key: { id: ctx.args.id } });
 }
 
 export function response(ctx) {

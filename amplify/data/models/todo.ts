@@ -1,8 +1,7 @@
 import { a } from "@aws-amplify/backend";
 
-export const Article = a.customType({
+export const Todo = a.customType({
   id: a.id().required(),
-  title: a.string().required(),
   content: a.string().required(),
   authorId: a.string().required(),
 });

@@ -10,7 +10,7 @@ export const GetArticle = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../functions/dynamoDB/get/handler.ts",
+      entry: "../data/getItem.js",
     })
   );
 
@@ -21,7 +21,7 @@ export const ListArticles = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../functions/dynamoDB/list/handler.ts",
+      entry: "../data/getItem.js",
     })
   );
 
@@ -31,7 +31,6 @@ export const AddArticle = a
     id: a.id(),
     title: a.string().required(),
     content: a.string().required(),
-    createdAt: a.string().required(),
     authorId: a.string().required(),
   })
   .returns(a.ref("Article"))
@@ -39,7 +38,7 @@ export const AddArticle = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../functions/dynamoDB/add/handler.ts",
+      entry: "../data/getItem.js",
     })
   );
 
@@ -47,17 +46,16 @@ export const UpdateArticle = a
   .mutation()
   .arguments({
     id: a.id().required(),
-    title: a.string(),
-    content: a.string(),
-    createdAt: a.string(),
-    authorId: a.string(),
+    title: a.string().required(),
+    content: a.string().required(),
+    authorId: a.string().required(),
   })
   .returns(a.ref("Article"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../functions/dynamoDB/update/handler.ts",
+      entry: "../data/getItem.js",
     })
   );
 
@@ -71,6 +69,6 @@ export const DeleteArticle = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../functions/dynamoDB/delete/handler.ts",
+      entry: "../data/getItem.js",
     })
   );

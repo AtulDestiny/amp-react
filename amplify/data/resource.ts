@@ -1,6 +1,7 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { Article } from "./models/article";
 import { Author } from "./models/author";
+import { Todo } from "./models/todo";
 import { GetFileS3 } from "../customResolvers/getFileS3";
 import { UploadFileS3 } from "../customResolvers/uploadFileS3";
 import { ExecuteFlow } from "../customResolvers/executeFlow";
@@ -9,102 +10,11 @@ import { ListFilesS3 } from "../customResolvers/listFilesS3";
 const schema = a.schema({
   Article,
   Author,
+  Todo,
   GetFileS3,
   UploadFileS3,
   ExecuteFlow,
   ListFilesS3,
-  Post: a.customType({
-    id: a.id().required(),
-    author: a.string().required(),
-    title: a.string(),
-    content: a.string(),
-    url: a.string(),
-    ups: a.integer(),
-    downs: a.integer(),
-    version: a.integer(),
-  }),
-
-  addPost: a
-    .mutation()
-    .arguments({
-      id: a.id(),
-      author: a.string().required(),
-      title: a.string(),
-      content: a.string(),
-      url: a.string(),
-    })
-    .returns(a.ref("Post"))
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "ExternalPostTableDataSource",
-        entry: "./addItem.js",
-      })
-    ),
-  // addItem: a
-  //   .mutation()
-  //   .arguments({
-  //     id: a.id(),
-  //     name: a.string().required(),
-  //   })
-  //   .returns(a.ref("Author"))
-  //   .authorization((allow) => [allow.publicApiKey()])
-  //   .handler(
-  //     a.handler.custom({
-  //       dataSource: "ExternalAuthorTableDataSource",
-  //       entry: "./addItem.ts",
-  //     })
-  //   ),
-  // getItem: a
-  //   .query()
-  //   .arguments({
-  //     id: a.id().required(),
-  //   })
-  //   .returns(a.ref("Author"))
-  //   .authorization((allow) => [allow.publicApiKey()])
-  //   .handler(
-  //     a.handler.custom({
-  //       dataSource: "AuthorTableDataSource",
-  //       entry: "./getItem.ts",
-  //     })
-  //   ),
-  // updateItem: a
-  //   .mutation()
-  //   .arguments({
-  //     id: a.id().required(),
-  //     name: a.string().required(),
-  //   })
-  //   .returns(a.ref("Author"))
-  //   .authorization((allow) => [allow.publicApiKey()])
-  //   .handler(
-  //     a.handler.custom({
-  //       dataSource: "AuthorTableDataSource",
-  //       entry: "./updateItem.ts",
-  //     })
-  //   ),
-  // deleteItem: a
-  //   .mutation()
-  //   .arguments({
-  //     id: a.id().required(),
-  //   })
-  //   .returns(a.ref("Author"))
-  //   .authorization((allow) => [allow.publicApiKey()])
-  //   .handler(
-  //     a.handler.custom({
-  //       dataSource: "AuthorTableDataSource",
-  //       entry: "./deleteItem.ts",
-  //     })
-  //   ),
-  // listItems: a
-  //   .query()
-  //   .returns(a.ref("Author").array())
-  //   .authorization((allow) => [allow.publicApiKey()])
-  //   .handler(
-  //     a.handler.custom({
-  //       dataSource: "AuthorTableDataSource",
-  //       entry: "./listItems.ts",
-  //     })
-  //   ),
   // GetItem,
   // AddItem,
   // DeleteItem,
