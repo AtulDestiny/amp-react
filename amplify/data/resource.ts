@@ -31,7 +31,7 @@ import {
 const schema = a.schema({
   // TestCustomEntity,
   Article,
-  Author: a.customType({
+  Author1: a.customType({
     id: a.id().required(),
     name: a.string().required(),
     createdAt: a.string(),
@@ -47,7 +47,7 @@ const schema = a.schema({
       id: a.id(),
       name: a.string().required(),
     })
-    .returns(a.ref("Author"))
+    .returns(a.ref("Author1"))
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
