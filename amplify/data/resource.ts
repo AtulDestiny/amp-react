@@ -29,9 +29,12 @@ import {
 } from "../customResolvers/author";
 
 const schema = a.schema({
-  TestCustomEntity,
-  Article,
-  Author,
+  // TestCustomEntity,
+  // Article,
+  Author: a.customType({
+    id: a.id().required(),
+    name: a.string().required(),
+  }),
   GetFileS3,
   UploadFileS3,
   ExecuteFlow,
@@ -39,9 +42,10 @@ const schema = a.schema({
   addItem: a
     .mutation()
     .arguments({
-      input: a.json().required(),
+      id: a.id(),
+      name: a.string().required(),
     })
-    .returns(a.json())
+    .returns(a.ref("Author"))
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
@@ -52,9 +56,9 @@ const schema = a.schema({
   getItem: a
     .query()
     .arguments({
-      id: a.string().required(),
+      id: a.id().required(),
     })
-    .returns(a.json())
+    .returns(a.ref("Author"))
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
@@ -65,9 +69,10 @@ const schema = a.schema({
   updateItem: a
     .mutation()
     .arguments({
-      input: a.json().required(),
+      id: a.id().required(),
+      name: a.string().required(),
     })
-    .returns(a.json())
+    .returns(a.ref("Author"))
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
@@ -78,9 +83,9 @@ const schema = a.schema({
   deleteItem: a
     .mutation()
     .arguments({
-      id: a.string().required(),
+      id: a.id().required(),
     })
-    .returns(a.json())
+    .returns(a.ref("Author"))
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
@@ -90,7 +95,7 @@ const schema = a.schema({
     ),
   listItems: a
     .query()
-    .returns(a.json())
+    .returns(a.ref("Author").array())
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
