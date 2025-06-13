@@ -212,7 +212,7 @@ export default function Content() {
       case 'author':
         setFormState({
           authorId: "",
-          title: item.name || "", // For authors, use name as title
+          name: item.name || "", // For authors, use name as title
           content: "",
           type: activeMenu,
         });
