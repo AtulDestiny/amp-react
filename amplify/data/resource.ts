@@ -13,20 +13,30 @@ const schema = a.schema({
   UploadFileS3,
   ExecuteFlow,
   ListFilesS3,
-  addItem: a
-    .mutation()
-    .arguments({
-      id: a.id(),
-      name: a.string().required(),
-    })
-    .returns(a.ref("Author"))
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "ExternalAuthorTableDataSource",
-        entry: "./addItem.ts",
-      })
-    ),
+  Post: a.customType({
+    id: a.id().required(),
+    author: a.string().required(),
+    title: a.string(),
+    content: a.string(),
+    url: a.string(),
+    ups: a.integer(),
+    downs: a.integer(),
+    version: a.integer(),
+  }),
+  // addItem: a
+  //   .mutation()
+  //   .arguments({
+  //     id: a.id(),
+  //     name: a.string().required(),
+  //   })
+  //   .returns(a.ref("Author"))
+  //   .authorization((allow) => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "ExternalAuthorTableDataSource",
+  //       entry: "./addItem.ts",
+  //     })
+  //   ),
   // getItem: a
   //   .query()
   //   .arguments({
