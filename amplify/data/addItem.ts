@@ -2,14 +2,9 @@ import { Context, util } from "@aws-appsync/utils";
 import * as ddb from "@aws-appsync/utils/dynamodb";
 
 export function request(ctx: any) {
-  const id = ctx.args.id ?? util.autoId();
-  const now = util.time.nowISO8601();
-
-  const item = {
-    ...ctx.arguments,
-  };
-
-  return ddb.put({ key: { id }, item });
+  const item = { ...ctx.arguments };
+  const key = { id: ctx.args.id ?? util.autoId() };
+  return ddb.put({ key, item });
 }
 
 export function response(ctx: any) {
