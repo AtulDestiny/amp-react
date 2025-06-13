@@ -21,7 +21,7 @@ export const ListArticles = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/listItems.js",
     })
   );
 
@@ -38,7 +38,7 @@ export const AddArticle = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/addItem.js",
     })
   );
 
@@ -55,7 +55,7 @@ export const UpdateArticle = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/updateItem.js",
     })
   );
 
@@ -69,6 +69,6 @@ export const DeleteArticle = a
   .handler(
     a.handler.custom({
       dataSource: "ArticleTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/deleteItem.js",
     })
   );

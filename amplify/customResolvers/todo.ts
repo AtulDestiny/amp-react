@@ -21,7 +21,7 @@ export const ListTodos = a
   .handler(
     a.handler.custom({
       dataSource: "TodoTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/listItems.js",
     })
   );
 
@@ -37,7 +37,7 @@ export const AddTodo = a
   .handler(
     a.handler.custom({
       dataSource: "TodoTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/addItem.js",
     })
   );
 
@@ -53,7 +53,7 @@ export const UpdateTodo = a
   .handler(
     a.handler.custom({
       dataSource: "TodoTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/updateItem.js",
     })
   );
 
@@ -67,6 +67,6 @@ export const DeleteTodo = a
   .handler(
     a.handler.custom({
       dataSource: "TodoTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/deleteItem.js",
     })
   );

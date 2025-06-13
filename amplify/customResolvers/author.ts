@@ -21,7 +21,7 @@ export const ListAuthors = a
   .handler(
     a.handler.custom({
       dataSource: "AuthorTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/listItems.js",
     })
   );
 
@@ -36,7 +36,7 @@ export const AddAuthor = a
   .handler(
     a.handler.custom({
       dataSource: "AuthorTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/addItem.js",
     })
   );
 
@@ -51,7 +51,7 @@ export const UpdateAuthor = a
   .handler(
     a.handler.custom({
       dataSource: "AuthorTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/updateItem.js",
     })
   );
 
@@ -65,6 +65,6 @@ export const DeleteAuthor = a
   .handler(
     a.handler.custom({
       dataSource: "AuthorTableDataSource",
-      entry: "../data/getItem.js",
+      entry: "../data/deleteItem.js",
     })
   );
