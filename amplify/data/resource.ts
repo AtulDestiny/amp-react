@@ -8,25 +8,25 @@ import { ListFilesS3 } from "../customResolvers/listFilesS3";
 
 const schema = a.schema({
   Article,
-  // Author,
+  Author,
   GetFileS3,
   UploadFileS3,
   ExecuteFlow,
   ListFilesS3,
-  // addItem: a
-  //   .mutation()
-  //   .arguments({
-  //     id: a.id(),
-  //     name: a.string().required(),
-  //   })
-  //   .returns(a.ref("Author"))
-  //   .authorization((allow) => [allow.publicApiKey()])
-  //   .handler(
-  //     a.handler.custom({
-  //       dataSource: "AuthorTableDataSource",
-  //       entry: "./addItem.ts",
-  //     })
-  //   ),
+  addItem: a
+    .mutation()
+    .arguments({
+      id: a.id(),
+      name: a.string().required(),
+    })
+    .returns(a.ref("Author"))
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(
+      a.handler.custom({
+        dataSource: "AuthorTableDataSource",
+        entry: "./addItem.ts",
+      })
+    ),
   // getItem: a
   //   .query()
   //   .arguments({

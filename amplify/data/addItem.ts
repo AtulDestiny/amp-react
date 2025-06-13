@@ -6,11 +6,7 @@ export function request(ctx: any) {
   const now = util.time.nowISO8601();
 
   const item = {
-    id,
-    name: ctx.args.name,
-    __typename: "Author",
-    createdAt: now,
-    updatedAt: now,
+    ...ctx.arguments,
   };
 
   return ddb.put({ key: { id }, item });
