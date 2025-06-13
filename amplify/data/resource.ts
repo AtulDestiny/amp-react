@@ -6,6 +6,27 @@ import { GetFileS3 } from "../customResolvers/getFileS3";
 import { UploadFileS3 } from "../customResolvers/uploadFileS3";
 import { ExecuteFlow } from "../customResolvers/executeFlow";
 import { ListFilesS3 } from "../customResolvers/listFilesS3";
+import {
+  AddArticle,
+  GetArticle,
+  UpdateArticle,
+  DeleteArticle,
+  ListArticles,
+} from "../customResolvers/article";
+import {
+  AddAuthor,
+  GetAuthor,
+  UpdateAuthor,
+  DeleteAuthor,
+  ListAuthors,
+} from "../customResolvers/author";
+import {
+  AddTodo,
+  GetTodo,
+  UpdateTodo,
+  DeleteTodo,
+  ListTodos,
+} from "../customResolvers/todo";
 
 const schema = a.schema({
   Article,
@@ -15,21 +36,21 @@ const schema = a.schema({
   UploadFileS3,
   ExecuteFlow,
   ListFilesS3,
-  // GetItem,
-  // AddItem,
-  // DeleteItem,
-  // ListItems,
-  // UpdateItem,
-  // GetArticle,
-  // AddArticle,
-  // DeleteArticle,
-  // ListArticles,
-  // UpdateArticle,
-  // GetAuthor,
-  // AddAuthor,
-  // DeleteAuthor,
-  // ListAuthors,
-  // UpdateAuthor,
+  AddArticle,
+  GetArticle,
+  UpdateArticle,
+  DeleteArticle,
+  ListArticles,
+  AddAuthor,
+  GetAuthor,
+  UpdateAuthor,
+  DeleteAuthor,
+  ListAuthors,
+  AddTodo,
+  GetTodo,
+  UpdateTodo,
+  DeleteTodo,
+  ListTodos,
 });
 
 export type Schema = ClientSchema<typeof schema>;
