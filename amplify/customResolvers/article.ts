@@ -16,7 +16,7 @@ export const GetArticle = a
 
 export const ListArticles = a
   .query()
-  .returns(a.ref("Article").array())
+  .returns(a.ref("ListArticlesResult"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -46,9 +46,9 @@ export const UpdateArticle = a
   .mutation()
   .arguments({
     id: a.id().required(),
-    title: a.string().required(),
-    content: a.string().required(),
-    authorId: a.string().required(),
+    title: a.string(),
+    content: a.string(),
+    authorId: a.string(),
   })
   .returns(a.ref("Article"))
   .authorization((allow) => [allow.publicApiKey()])

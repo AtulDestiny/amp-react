@@ -5,3 +5,9 @@ export const Todo = a.customType({
   content: a.string().required(),
   authorId: a.string().required(),
 });
+
+export const ListTodosResult = a.customType({
+  items: a.ref("Todo").array(),
+  nextToken: a.string() || null,
+  scannedCount: a.integer(),
+});

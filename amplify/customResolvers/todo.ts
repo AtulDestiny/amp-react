@@ -16,7 +16,7 @@ export const GetTodo = a
 
 export const ListTodos = a
   .query()
-  .returns(a.ref("Todo").array())
+  .returns(a.ref("ListTodosResult"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
@@ -45,8 +45,8 @@ export const UpdateTodo = a
   .mutation()
   .arguments({
     id: a.id().required(),
-    content: a.string().required(),
-    authorId: a.string().required(),
+    content: a.string(),
+    authorId: a.string(),
   })
   .returns(a.ref("Todo"))
   .authorization((allow) => [allow.publicApiKey()])

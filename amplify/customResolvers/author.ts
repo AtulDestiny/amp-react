@@ -16,7 +16,7 @@ export const GetAuthor = a
 
 export const ListAuthors = a
   .query()
-  .returns(a.ref("Author").array())
+  .returns(a.ref("ListAuthorsResult"))
   .authorization((allow) => [allow.publicApiKey()])
   .handler(
     a.handler.custom({
